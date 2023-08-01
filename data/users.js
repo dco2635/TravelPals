@@ -1,6 +1,5 @@
 import {users} from '../config/mongoCollections.js';
 import {ObjectId} from 'mongodb';
-import validate from '../validate.js';
 
 
 let exportedMethods = {
@@ -13,7 +12,7 @@ let exportedMethods = {
 
 
     async getUserById(id) {
-       id= validate.checkId(id); 
+
         const userCollection = await users();
         const user = await userCollection.findOne({_id: ObjectId(id)});
         if (!user) throw 'Error: User not found';
@@ -21,13 +20,6 @@ let exportedMethods = {
       },
 
     async addUser(firstName, lastName, email, phoneNumber, password ) {
-        firstName= validate.checkString(firstName, 'First Name');
-        lastName= validate.checkString(lastName, 'Last Nane');
-        email= validate.checkString(email, 'Email');
-        email= validate.checkEmail(email); 
-        
-        //TODO validate phone number 
-        //TODO validation password
 
     
         let newUser = {

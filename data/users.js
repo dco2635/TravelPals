@@ -1,6 +1,6 @@
 import {users} from '../config/mongoCollections.js';
 import {ObjectId} from 'mongodb';
-
+import validate from '../validate.js';
 
 let exportedMethods = {
 
@@ -20,7 +20,12 @@ let exportedMethods = {
       },
 
     async addUser(firstName, lastName, email, phoneNumber, password ) {
-
+      firstName= validate.checkString(firstName);
+      lastName= validate.checkString(lastName);
+      email= validate.checkEmail(email); // not sure about this validation
+      email= validate.checkEmail(email); // not sure
+      //validate phone
+      //validate password
     
         let newUser = {
           firstName: firstName,

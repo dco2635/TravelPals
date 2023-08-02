@@ -1,38 +1,28 @@
-import {Router} from 'express';
+import { Router } from "express";
 const router = Router();
-import userDataFunctions from '../data/users.js';
-import validate from '../validate.js';
+import userDataFunctions from "../data/users.js";
+import validate from "../validate.js";
 
+router.post("/register", async (req, res) => {
+  const userData = requ.body;
 
-router.post('/register', async (req, res) => {
-   const userData = requ.body; 
-
-   if (!userData || Object.keys(userInfo).length === 0) {
+  if (!userData || Object.keys(userInfo).length === 0) {
     return res
       .status(400)
-      .json({error: 'There are no fields in the request body'});
+      .json({ error: "There are no fields in the request body" });
   }
 
   try {
-    userData.firstName = validate.checkString(
-      userInfo.firstName,
-      'First Name'
-    );
-    userData.lastName = validate.checkString(
-      userInfo.lastName,
-      'Last Name'
-    );
-    
-    userData.email= validate.checkString(
-        userInfo.email,
-        'Email'
-    );
-    userData.email= validate.checkEmail; 
-    
+    userData.firstName = validate.checkString(userInfo.firstName, "First Name");
+    userData.lastName = validate.checkString(userInfo.lastName, "Last Name");
+
+    userData.email = validate.checkString(userInfo.email, "Email");
+    userData.email = validate.checkEmail;
+
     //validate phone
     //valida password
   } catch (e) {
-    return res.status(400).json({error: e});
+    return res.status(400).json({ error: e });
   }
 
   try {
@@ -47,8 +37,7 @@ router.post('/register', async (req, res) => {
   } catch (e) {
     res.sendStatus(500);
   }
+  // do we need to make a file for each page?
+});
 
-
-  });
-
-  export default router; 
+export default router;

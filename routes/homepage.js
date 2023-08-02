@@ -9,4 +9,5 @@ router.route('/').get(async (req, res) => {
 router.route('/search').get(async (req, res) => {
     res.send('Welcome to search')
  });
+ router.route('')
 export default router

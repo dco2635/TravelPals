@@ -24,6 +24,7 @@ let exportedMethods = {
     email = validate.checkEmail(email); // not sure about this validation
     // email = validate.checkEmail(email); // not sure
     phoneNumber = validate.checkString(phoneNumber);
+    userName = validate.checkString(userName);
     //validate phone
     //validate password ---> NEED TO HASH PASSWORD
     const hash = await bcrypt.hash(password,saltRounds)
@@ -67,6 +68,59 @@ let exportedMethods = {
     if (!user) throw "Error: User not found";
     return user;
   },
+
+  async lookupUser(userName){
+    userName = validate.checkString(userName);
+
+    const userCollection = await users();
+
+    const user = await userCollection.findOne({ userName: userName});
+
+    let flag = false;
+    if (user) {
+      flag = true;
+    }
+
+    return flag;
+    
+  },
+
+  async lookupEmail(email){
+    email = validate.checkString(email);
+    email = validate.checkEmail(email); // not sure about this validation
+  
+
+    const userCollection = await users();
+
+    const user = await userCollection.findOne({ email: email});
+
+    let flag = false;
+    if (user) {
+      flag = true;
+    }
+
+    return flag;
+    
+  },
+
+  async lookupPhoneNumber(phoneNumber){
+    phoneNumber = validate.checkString(phoneNumber);
+
+  
+
+    const userCollection = await users();
+
+    const user = await userCollection.findOne({ phoneNumber: phoneNumber});
+
+    let flag = false;
+    if (user) {
+      flag = true;
+    }
+
+    return flag;
+    
+  },
+
   // Authentication of the User! 
   async getUserByUserName(userName, password){
 

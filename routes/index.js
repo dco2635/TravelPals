@@ -1,9 +1,9 @@
 import homepageRoutes from './homepage.js'
-import userRoutes from './users.js'
+import registerRoutes from './register.js'
 const constructorMethod = (app) => {
     
     app.use('/', homepageRoutes);
-    app.use('/', userRoutes);
+    app.use('/', registerRoutes);
     
   
     app.use('*', (req, res) => {

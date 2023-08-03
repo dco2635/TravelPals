@@ -64,6 +64,7 @@ router.post("/", async (req, res) => {
     const newUser = await userDataFunctions.addUser(
       userData.firstName,
       userData.lastName,
+      userData.userName,
       userData.email,
       userData.phoneNumber,
       userData.password

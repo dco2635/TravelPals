@@ -1,13 +1,59 @@
+{{! This will be your default layout for all handlebars file rendered. This will be inherited by all other templates. }}
+{{! Refer lecture code to learn more on how this works: https://github.com/stevens-cs546-cs554/CS-546/tree/master/lecture_08/code/HTML_Templating }}
+
 <!DOCTYPE html>
+ <html lang="en">
+ <head>
+   <title>{{pageTitle}}</title>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-<html lang="en">
+        <!-- jQuery library -->
+        <script  src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 
-    <head>
-        <meta charset="utf-8">
-       <title>{{pageTitle}}</title>
-        <meta http-equiv="refresh" content="900">
-    </head>
-    <body>
-       {{{body}}}
-    </body>
-</html>
+        <!-- Latest compiled JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+        <!-- Bootstrap validator JS and CSS -->
+        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.2/css/bootstrapValidator.min.css"/>
+        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.2/js/bootstrapValidator.min.js"></script>
+          
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="#" crossorigin="anonymous">
+        
+        <link type="text/css" rel="stylesheet" href="../stylesheets/stylesheet.css" />
+ </head>
+
+ <body>
+  <nav class="navbar navbar-expand-md navbar-dark bg-primary">
+      <span class="navbar-brand abs">Travel Pals</span>
+  </nav>
+  
+  <main>
+    <div class="row">
+      <div class="col-md-3 ">
+          <div class="list-group">
+              <a href="/" class="list-group-item list-group-item-action">News Feed</a>
+              <a href="/addpost" class="list-group-item list-group-item-action">Add New Post</a>
+              <a href="/profile" class="list-group-item list-group-item-action">My Profile</a>
+              <a href="/logout" class="list-group-item list-group-item-action">Logout</a>
+          </div> 
+      </div>
+      <div class="col-md-9">
+          <div class="card">
+              {{{body}}}
+          </div>
+      </div>
+  </div>
+  </main>
+
+
+  <footer>
+      <div class="footer-copyright text-center py-3">
+          <hr>
+          <p>&copy; <a href="">Privacy Policy</a> | <a href="">Terms of Use</a></p>
+      </div>
+  </footer>
+</body>
+
+ </html>
+
+ 

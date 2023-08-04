@@ -3,7 +3,7 @@ const router = Router();
 import userDataFunctions from "../data/users.js";
 import validate from "../validate.js";
 
-router.post("/", async (req, res) => {
+router.post("/register", async (req, res) => {
   let userData = req.body;
   console.log(req.body);
 

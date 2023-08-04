@@ -21,13 +21,17 @@ let exportedMethods = {
   async addUser(firstName, lastName, userName, email, phoneNumber, password) {
     firstName = validate.checkString(firstName);
     lastName = validate.checkString(lastName);
-    email = validate.checkEmail(email); // not sure about this validation
+    //email = validate.checkString(email); // not sure about this validation
     // email = validate.checkEmail(email); // not sure
-    phoneNumber = validate.checkString(phoneNumber);
+    //phoneNumber = validate.checkString(phoneNumber);
     userName = validate.checkString(userName);
     //validate phone
-    //validate password ---> NEED TO HASH PASSWORD
+   
     const hash = await bcrypt.hash(password,saltRounds)
+
+    
+
+
 
     let newUser = {
       // _id: new ObjectId(),
@@ -35,7 +39,7 @@ let exportedMethods = {
       lastName: lastName,
       userName: userName,
       email: email,
-      phonenumber: phoneNumber,
+      phoneNumber: phoneNumber,
       password: hash,
       friends: [],
       post: [],
@@ -43,10 +47,12 @@ let exportedMethods = {
       likes: []
     };
     const userCollection = await users();
-    const newInsertInformation = await userCollection.insertOne(newUser);
+    const insertInfo = await userCollection.insertOne(newUser);
     
-    if (!newInsertInformation.insertedId) throw "Insert failed!";
-    return await this.getUserById(newInsertInformation.insertedId.toString());
+    if (!insertInfo.insertedId) throw "Insert failed!";
+    const user = await userCollection.findOne({_id: new ObjectId(insertInfo.insertedId)});
+
+    return user;
   },
   async getUserByEmail(){
     email = validate.checkString(email);
@@ -81,13 +87,15 @@ let exportedMethods = {
       flag = true;
     }
 
-    return flag;
+    if(flag == true) throw "Username already exists";
+
+    return user
     
   },
 
   async lookupEmail(email){
     email = validate.checkString(email);
-    email = validate.checkEmail(email); // not sure about this validation
+    //email = validate.checkEmail(email); // not sure about this validation
   
 
     const userCollection = await users();
@@ -99,14 +107,14 @@ let exportedMethods = {
       flag = true;
     }
 
-    return flag;
+    if(flag == true) throw "Email already exists";
+
+    return user
     
   },
 
   async lookupPhoneNumber(phoneNumber){
-    phoneNumber = validate.checkString(phoneNumber);
-
-  
+   // phoneNumber = validate.checkString(phoneNumber);
 
     const userCollection = await users();
 
@@ -117,7 +125,9 @@ let exportedMethods = {
       flag = true;
     }
 
-    return flag;
+    if(flag == true) throw "Number already exists";
+
+    return user
     
   },
 

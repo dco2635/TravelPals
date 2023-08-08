@@ -1,25 +1,215 @@
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalScrollable">
-  login
-</button>
+<!DOCTYPE html>
+<html lang="en">
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalScrollableTitle">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Sign In</button>
-      </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TravelPal 
+         Find Your Perfect Travel Companion</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+
+        header {
+            background: linear-gradient(135deg, #F4A460, #4CAF50, #1e90ff);
+            padding: 10px;
+            color: #fff;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav li {
+            margin: 0 20px;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #ffdb58;
+        }
+
+        .hero {
+            background-image: url('https://www.freeworldmaps.net/printable/printable-world-map-hd.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            text-align: center;
+            font-size: 28px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 40px;
+            color: #1e90ff;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            text-align: justify;
+            line-height: 1.6;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h2 {
+            color: #1e90ff;
+        }
+
+        p {
+            color: #555;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #F4A460, #4CAF50, #1e90ff);
+            color: #fff;
+            margin-top: 40px;
+            width: 100%;
+        }
+
+        .login-form,
+        .registration-form {
+            max-width: 400px;
+            margin: 20px;
+            padding: 20px;
+            border: 4px solid #1e90ff;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #555;
+            font-size: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 2%;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            font-size: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .login-btn,
+        .registration-btn {
+            flex: 1;
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+            margin: 5px;
+        }
+
+        .login-btn:hover,
+        .registration-btn:hover {
+            background-color: #45a049;
+        }
+
+        .image-container {
+            max-width: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 40px;
+        }
+
+        .image {
+            width: 100%;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="hero">
+        <h1>TravelPal</h1>
     </div>
-  </div>
-</div>
+    <main>
+        <section>
+            <h2>What is TravelPal?</h2>
+            <p>TravelPal serves as a social media application in which individuals can find travel companions among
+                their group of friends. If one individual wants to travel to Europe the last week of August, this web
+                application allows this individual to find a travel partner that would have the same budget, destination
+                choice, and timeline. To ensure maximum safety, individuals can only travel with designated friends. The
+                purpose of this application is to provide and plan meaningful experiences with friends and family.</p>
+        </section>
+
+        <div class="image-container">
+            <div class="registration-form">
+                <form>
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" placeholder="Enter your username" required>
+
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+                    <div class="btn-container">
+                        <button class="login-btn" type="submit">Login</button>
+                        <a class="registration-btn" href="./registration.html">Registration</a>
+                    </div>
+                </form>
+            </div>
+            <img src="https://heymondo.com/blog/wp-content/uploads/2021/03/shutterstock_371958268_compressed.jpg"
+                alt="USA Map" class="image">
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2023 TravelPal. All rights reserved.
+    </footer>
+</body>
+
+</html>

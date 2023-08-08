@@ -21,12 +21,12 @@ let exportedMethods = {
       userId: userId,
     };
     
-    const addedFriend = await userCollection.updateOne(
+    const addedFriend = await userCollection.updateOne( //talk to David about this
       { _id: new ObjectId(userId) },
       { $push: { friends: newFriend } }
     );
 
-    const storedFriend = await friendsCollection.insertOne(newFriend);
+    const storedFriend = await friendsCollection.insertOne(newFriend); //talk to David about this. 
 
     const myFriend = await userCollection.find({ newFriend }).toArray();
 

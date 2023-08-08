@@ -27,7 +27,7 @@ const exportedMethods = {
    if (typeof email !== 'string') throw `Error: email must be a string!`;
    email = email.trim();
       email= email.toLowerCase();
-     if (email.contains(" ")) throw `Error: email cannot contain empty spaces`;
+     if (email.includes(" ")) throw `Error: email cannot contain empty spaces`;
     
     if (!email.match(/^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/)) throw "Email is not valid";
 

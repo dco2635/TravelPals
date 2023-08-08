@@ -23,9 +23,8 @@ let exportedMethods = {
     lastName = validate.checkString(lastName);
     email = validate.checkString(email); 
      email = validate.checkEmail(email); 
-    //phoneNumber = validate.checkString(phoneNumber);
+    phoneNumber = validate.checkPhoneNumber(phoneNumber);
     userName = validate.checkString(userName);
-    //validate phone
    
     const hash = await bcrypt.hash(password,saltRounds)
 
@@ -137,6 +136,8 @@ let exportedMethods = {
     const userCollection = await users();
 
     const user = await userCollection.findOne({ userName: userName });
+
+    if (!user) throw 'User cannot be found';
 
     let comparePassword = await bcrypt.compare(password, user.password );
     

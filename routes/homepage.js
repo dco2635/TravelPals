@@ -2,17 +2,133 @@
 import express from 'express';
 import path from 'path';
 const router = express.Router();
+import userDataFunctions from "../data/users.js";
+import validate from "../validate.js";
+import { ObjectId } from 'mongodb';
+
 router.route('/').get(async (req, res) => {
    res.render('newsFeed',{pageTitle:'News Feed'});
 });
 router.route('/addpost').get(async (req, res) => {
-   res.render('post',{pageTitle:'Person Not found'});
+   res.render('post',{pageTitle:'Add Post'});
 });
 router.route('/profile').get(async (req, res) => {
-   res.render('profile',{pageTitle:'Person Not found'});
+   res.render('profile',{pageTitle:'Profile'});
  });
 
  router.route('/logout').get(async (req, res) => {
-   res.render('logout',{pageTitle:'Person Not found'});
+   res.render('logout',{pageTitle:'Logout'});
 });
+
+router.route('/login').get(async (req, res) => {
+   res.render('partials/login',{pageTitle:'Login'});
+});
+
+router.route('/login').post(async (req, res) => {
+  let userInfo = req.body; 
+  try {
+    
+    if (!userInfo.userName)throw "Username is not specfied"; 
+    if (!userInfo.password)throw "Password is not specfied"; 
+
+   userInfo.userName= validate.checkString(userInfo.userName);
+   userInfo.password= validate.checkString(userInfo.password);
+
+  }
+  catch(e) {
+    return res.status(400).json({ error: e });
+  }
+
+  try {
+    let authUser= await userDataFunctions.checkUser(userInfo.userName, userInfo.password);
+    res.json(authUser);
+   let user = {_id: authUser._id, phoneNumber: authUser.phoneNumber, userName: authUser.userName}; //need to update req.session.user look at nader's code for reference
+   console.log(user);
+    
+  }
+  catch(e){
+    res.status(500).json({error: e});
+  }
+  
+});
+
+router.route('/register').get(async (req, res) => {
+   res.render('partials/register',{pageTitle:'Register'});
+});
+
+router.route('/register').post(async (req, res) => {
+   let userData = req.body;
+   console.log(req.body);
+ 
+   if (!userData || Object.keys(userData).length === 0) {
+     return res
+       .status(400)
+       .json({ error: "There are no fields in the request body" });
+   }
+ 
+   try {   //validate input
+     userData.firstName = validate.checkString(userData.firstName, "First Name");  
+     userData.lastName = validate.checkString(userData.lastName, "Last Name");
+ 
+     userData.email = validate.checkString(userData.email, "Email");
+      userData.email = validate.checkEmail(userData.email);
+     userData.phoneNumber= validate.checkPhoneNumber(userData.phoneNumber);
+     userData.userName= validate.checkString(userData.userName);
+     userData.password= validate.checkString(userData.password);
+     
+     
+   } catch (e) {
+     return res.status(400).json({ error: e });
+   }
+ 
+ 
+ try {
+   let validUser = await userDataFunctions.lookupUser(userData.userName);
+   
+ }
+ catch (e) {
+   return res.status(400).json({ error: e });
+ }
+ 
+ try {
+   let validEmail = await userDataFunctions.lookupEmail(userData.email);
+ 
+ }
+   
+ catch (e) {
+   return res.status(400).json({ error: e });
+ }
+ 
+ try {
+   let validNumber = await userDataFunctions.lookupPhoneNumber(userData.phoneNumber);
+ 
+ }
+   
+ catch (e) {
+   return res.status(400).json({ error: e });
+ }
+ 
+ 
+ 
+ 
+   
+ 
+ 
+   try {
+     const newUser = await userDataFunctions.addUser(
+       userData.firstName,
+       userData.lastName,
+       userData.userName,
+       userData.email,
+       userData.phoneNumber,
+       userData.password
+     );
+     res.json(newUser);
+   } catch (e) {
+     res.status(500).json({error: e});
+   }
+   
+});
+
+
 export default router

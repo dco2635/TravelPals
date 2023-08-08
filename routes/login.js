@@ -22,6 +22,7 @@ loginRoute.post("/login", async (req, res) => {
 
       try {
         let authUser= await userDataFunctions.checkUser(userInfo.userName, userInfo.password);
+        req.session.user = {_id: authUser.id, phoneNumber: authUser.phoneNumber, userName: authUser.userName};
         
       }
       catch(e){

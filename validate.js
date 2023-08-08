@@ -23,16 +23,18 @@ const exportedMethods = {
   },
 
   checkEmail(email) {
-    if (emailincludes(".")!== true) throw "error: string does contain dot operator ";
-    var sub=email.substring(emailDomain.lastIndexOf('.')+1);
-     if (sub < 2) throw "error: less than 2 letters after dot";
-    if(email.charAt(0) === ".") throw "missing domain"
-    return email }
+    if (!email) throw `Error: You must supply a email!`;
+   if (typeof email !== 'string') throw `Error: email must be a string!`;
+      email= email.toLowerCase();
+     if (email.contains(" ")) throw `Error: email cannot contain empty spaces`;
+    
+    if (!email.match(/^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/)) throw "Email is not valid";
+
+    return email;
+
+
+  }
+
+
 };
-
-// function validateEmail(email) {
-//   const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-//   return regex.test(String(email).toLowerCase());
-// }
-
 export default exportedMethods;

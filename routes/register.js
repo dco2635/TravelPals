@@ -1,9 +1,9 @@
 import { Router } from "express";
-const router = Router();
+const registerRoute = Router();
 import userDataFunctions from "../data/users.js";
 import validate from "../validate.js";
 
-router.post("/register", async (req, res) => {
+registerRoute.post("/register", async (req, res) => {
   let userData = req.body;
   console.log(req.body);
 
@@ -18,7 +18,7 @@ router.post("/register", async (req, res) => {
     userData.lastName = validate.checkString(userData.lastName, "Last Name");
 
     userData.email = validate.checkString(userData.email, "Email");
-    //  userData.email = validate.checkEmail(userData.email);
+     userData.email = validate.checkEmail(userData.email);
     //userData.phoneNumber= validate.checkString(userData.phoneNumber);
     userData.userName= validate.checkString(userData.userName);
     userData.password= validate.checkString(userData.password);
@@ -77,4 +77,4 @@ catch (e) {
   
 });
 
-export default router;
+export default registerRoute;

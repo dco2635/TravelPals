@@ -21,8 +21,8 @@ let exportedMethods = {
   async addUser(firstName, lastName, userName, email, phoneNumber, password) {
     firstName = validate.checkString(firstName);
     lastName = validate.checkString(lastName);
-    //email = validate.checkString(email); // not sure about this validation
-    // email = validate.checkEmail(email); // not sure
+    email = validate.checkString(email); 
+     email = validate.checkEmail(email); 
     //phoneNumber = validate.checkString(phoneNumber);
     userName = validate.checkString(userName);
     //validate phone

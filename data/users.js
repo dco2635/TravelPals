@@ -132,7 +132,7 @@ let exportedMethods = {
   },
 
   // Authentication of the User! 
-  async getUserByUserName(userName, password){
+  async checkUser(userName, password){
 
     const userCollection = await users();
 

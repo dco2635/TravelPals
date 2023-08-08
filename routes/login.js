@@ -11,10 +11,9 @@ loginRoute.post("/login", async (req, res) => {
     
         if (!userInfo.userName)throw "Email address is not specfied"; 
         if (!userInfo.password)throw "Password is not specfied"; 
-        userInfo.email = validate.checkString(userInfo.email, "Email");
-        userInfo.email = validate.checkEmail(userInfo.email);
-       //userData.phoneNumber= validate.checkString(userData.phoneNumber);
+  
        userInfo.userName= validate.checkString(userInfo.userName);
+       userInfo.password= validate.checkString(userData.password);
   
       }
       catch(e) {
@@ -22,11 +21,11 @@ loginRoute.post("/login", async (req, res) => {
       }
 
       try {
-        let authUser= await userDataFunctions.checkUser(userInfo.emailAddressInput, userInfo.passwordInput)
+        let authUser= await userDataFunctions.checkUser(userInfo.userName, userInfo.password);
         
       }
       catch(e){
-        res.status(500).render('register', {error: e.message});
+        res.status(500).render('login', {error: e.message});
   
       }
       

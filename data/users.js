@@ -54,12 +54,12 @@ let exportedMethods = {
 
     return user;
   },
-  async getUserByEmail(){
-    email = validate.checkString(email);
+  async getUserByUserName(userName){
+    userName = validate.checkString(userName);
 
     const userCollection = await users();
     
-    const user = await userCollection.findOne({ email: email });
+    const user = await userCollection.findOne({ userName: userName });
 
     if (!user) throw "Error: User not found";
     return user;

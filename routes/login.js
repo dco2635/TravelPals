@@ -26,7 +26,6 @@ loginRoute.post("/login", async (req, res) => {
       }
       catch(e){
         res.status(500).render('login', {error: e.message});
-  
       }
       
 

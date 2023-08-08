@@ -25,14 +25,22 @@ const exportedMethods = {
   checkEmail(email) {
     if (!email) throw `Error: You must supply a email!`;
    if (typeof email !== 'string') throw `Error: email must be a string!`;
+   email = email.trim();
       email= email.toLowerCase();
      if (email.contains(" ")) throw `Error: email cannot contain empty spaces`;
     
     if (!email.match(/^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/)) throw "Email is not valid";
 
     return email;
-
-
+  },
+  checkPhoneNumber(phoneNumber) {
+    if(!phoneNumber) throw 'Error: we need the phone numnber';
+    phoneNumber = phoneNumber.trim();
+    if (phoneNumber.length != 10) throw 'phoneNumber needs to be exactly 10 digits!'
+ 
+    if(!phoneNumber.match(/^[0-9]+$/)) throw 'phoneNumber is not valid!'
+    
+    return phoneNumber;
   }
 
 

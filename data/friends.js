@@ -4,13 +4,13 @@ import { userData } from "./index.js";
 import validate from "../validate.js";
 
 let exportedMethods = {
-
-  
   async createFriendByPhoneNumber(phoneNumber, userId) {
     //how to get the userID!?
     phoneNumber = validate.checkPhoneNumber(phoneNumber);
 
-    const yourFriend = userData.getUserByPhoneNumber(phoneNumber)
+    userId = validate.checkId(userId);
+
+    const yourFriend = userData.getUserByPhoneNumber(phoneNumber);
     const userCollection = await users();
 
     const friendsCollection = await friends();
@@ -20,13 +20,14 @@ let exportedMethods = {
       friendId: yourFriend._id,
       userId: userId,
     };
-    
-    const addedFriend = await userCollection.updateOne( //talk to David about this
+
+    const addedFriend = await userCollection.updateOne(
+      //talk to David about this
       { _id: new ObjectId(userId) },
       { $push: { friends: newFriend } }
     );
 
-    const storedFriend = await friendsCollection.insertOne(newFriend); //talk to David about this. 
+    const storedFriend = await friendsCollection.insertOne(newFriend); //talk to David about this.
 
     const myFriend = await userCollection.find({ newFriend }).toArray();
 
@@ -35,20 +36,21 @@ let exportedMethods = {
   async createFriendUserName(userName, userId) {
     //how to get the userID!?
     userName = validate.checkString(userName);
+    userId = validate.checkId(userId);
 
-    const yourFriend = userData.getUserByUserName(userName)
+    const yourFriend = userData.getUserByUserName(userName);
     const userCollection = await users();
 
     const friendsCollection = await friends();
 
     const newFriend = {
       _id: new ObjectId(),
-      friendId: yourFriend._id,
+      friendId: ObjectId(yourFriend._id),
       userId: userId,
     };
-    
+
     const addedFriend = await userCollection.updateOne(
-      { _id: new ObjectId(userId) },
+      { _id: ObjectId(userId) },
       { $push: { friends: newFriend } }
     );
 
@@ -58,7 +60,7 @@ let exportedMethods = {
 
     return myFriend;
   },
-  
+
   // we need _id that represents the relationship | friend _id | user_id
   // think about how the phone number would be used to search and then once it is found the id attached to the phone number will be placed into the array!
 };

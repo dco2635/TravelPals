@@ -13,6 +13,7 @@ let exportedMethods = {
 
   async getUserById(id) {
     const userCollection = await users();
+    validate.checkId(id);
     const user = await userCollection.findOne({ _id: ObjectId(id) });
     if (!user) throw "Error: User not found";
     return user;

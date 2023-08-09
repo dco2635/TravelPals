@@ -3,6 +3,7 @@ import express from 'express';
 import path from 'path';
 const router = express.Router();
 import userDataFunctions from "../data/users.js";
+import {friendData} from "../data/index.js";
 import validate from "../validate.js";
 import { ObjectId } from 'mongodb';
 router.route('/').get(async (req, res) => {
@@ -17,6 +18,23 @@ router.route('/addpost').get(async (req, res) => {
 router.route('/profile').get(async (req, res) => {
    res.render('profile',{pageTitle:'Profile'});
  });
+
+ router.route('/profile').post(async (req, res) => {
+  res.render('profile',{pageTitle:'Profile'});
+
+  let userData = req.body;
+  try {
+    const newUser = await friendData.createFriendUserName(userData.userName, userData.userId); //requires req.session.user
+    
+    //res.json(newUser);
+  } catch (e) {
+    res.status(500).json({error: e});
+  }
+ 
+});
+
+
+
 
  router.route('/logout').get(async (req, res) => {
    res.render('logout',{pageTitle:'Logout'});

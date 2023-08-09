@@ -38,7 +38,7 @@ let exportedMethods = {
     userName = validate.checkString(userName);
     userId = validate.checkId(userId);
 
-    const yourFriend = userData.getUserByUserName(userName)
+    const yourFriend =  await userData.getUserByUserName(userName)
     const userCollection = await users();
 
     console.log(yourFriend);
@@ -48,7 +48,7 @@ let exportedMethods = {
 
     const newFriend = {
       _id: new ObjectId(),
-      friendId: ObjectId(yourFriend._id),
+      friendId: yourFriend._id,
       userId: userId,
     };
 

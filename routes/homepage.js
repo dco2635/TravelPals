@@ -5,9 +5,11 @@ const router = express.Router();
 import userDataFunctions from "../data/users.js";
 import validate from "../validate.js";
 import { ObjectId } from 'mongodb';
-
 router.route('/').get(async (req, res) => {
-   res.render('newsFeed',{pageTitle:'News Feed'});
+  res.render('login',{pageTitle:'News Feed'});
+});
+router.route('/newsFeed').get(async (req, res) => {
+  res.render('newsFeed',{pageTitle:'News Feed'});
 });
 router.route('/addpost').get(async (req, res) => {
    res.render('post',{pageTitle:'Add Post'});

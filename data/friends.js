@@ -36,8 +36,11 @@ let exportedMethods = {
     //how to get the userID!?
     userName = validate.checkString(userName);
 
-    const yourFriend = userData.getUserByUserName(userName)
+    const yourFriend = await userData.getUserByUserName(userName);
     const userCollection = await users();
+
+    console.log(yourFriend);
+   
 
     const friendsCollection = await friends();
 
@@ -62,3 +65,5 @@ let exportedMethods = {
   // we need _id that represents the relationship | friend _id | user_id
   // think about how the phone number would be used to search and then once it is found the id attached to the phone number will be placed into the array!
 };
+
+export default exportedMethods

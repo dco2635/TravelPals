@@ -10,7 +10,7 @@ let exportedMethods = {
 
     userId = validate.checkId(userId);
 
-    const yourFriend = userData.getUserByPhoneNumber(phoneNumber);
+    const yourFriend = await userData.getUserByPhoneNumber(phoneNumber);
     const userCollection = await users();
 
     const friendsCollection = await friends();
@@ -38,11 +38,10 @@ let exportedMethods = {
     userName = validate.checkString(userName);
     userId = validate.checkId(userId);
 
-    const yourFriend =  await userData.getUserByUserName(userName)
+    const yourFriend = await userData.getUserByUserName(userName);
     const userCollection = await users();
 
     console.log(yourFriend);
-   
 
     const friendsCollection = await friends();
 
@@ -68,4 +67,4 @@ let exportedMethods = {
   // think about how the phone number would be used to search and then once it is found the id attached to the phone number will be placed into the array!
 };
 
-export default exportedMethods
+export default exportedMethods;

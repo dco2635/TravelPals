@@ -33,6 +33,6 @@ let exportedMethods = {
   }
 };
 
-//get comment by post id or user id (relavant to populating comments under each post// we can also use this to implement our search function
+//get comment by post id 
 
 export default exportedMethods;

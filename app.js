@@ -1,4 +1,5 @@
 import express from 'express';
+import session from 'express-session';
 const app = express();
 import configRoutes from './routes/index.js';
 import {fileURLToPath} from 'url';
@@ -22,6 +23,18 @@ const handlebarsInstance = exphbs.create({
   }
 });
 
+app.use(
+  session({
+    name: 'TravelPal',
+    secret: "This is a secret.. shhh don't tell anyone",
+    saveUninitialized: false,
+    resave: false,
+    cookie: {maxAge: 60000}
+  })
+);
+
+
+
 app.use('/public', staticDir);
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -30,6 +43,8 @@ app.engine('handlebars', handlebarsInstance.engine);
 app.set('view engine', 'handlebars');
 
 configRoutes(app);
+
+
 
 app.listen(3000, () => {
   console.log("We've now got a server!");

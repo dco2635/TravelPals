@@ -18,6 +18,7 @@ let exportedMethods = {
         const newPost = {   //wouldn't we want to add a username to each post?? we can pass a name  with req.session.user like userid
             _id: new ObjectId(),
             userId: userId,
+            userName, userName,
             body: body, 
             title: title,
             comments: [],
@@ -41,10 +42,10 @@ let exportedMethods = {
       }
       
     //deleting post
-    //editing/ updating post
+    //updating post
     //updating likes 
 
-
+    //getpost by username implementing a search function
 
 };
 

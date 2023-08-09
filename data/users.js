@@ -42,8 +42,7 @@ let exportedMethods = {
       password: hash,
       friends: [],
       post: [],
-      comments: [],
-      likes: []
+      
     };
     const userCollection = await users();
     const insertInfo = await userCollection.insertOne(newUser);

@@ -8,6 +8,7 @@ let exportedMethods = {
     const userCollection = await users();
     const postsCollection = await posts();
     const commentCollection = await comments();
+
     const newComment = {  
         _id: new ObjectId(),
         userId: userId,
@@ -23,9 +24,16 @@ let exportedMethods = {
 
         //How will we update the user collection? 
 
+        const updateUserPost = await userCollection.findOneAndUpdate(
+          { "posts._id": new ObjectId(addedComment.postId) },
+          { $set: { posts: { _id: addedComment.postId} } }
+        );
+        //if this fails put "postId"
+
         const storedComment = commentCollection.insertOne(newComment); 
 
-        const myComment = await postCollection.find({ newComment }).toArray();
+  
+        const myComment = await postsCollection.find({ newComment }).toArray();
     
         return myComment;
 
@@ -33,6 +41,6 @@ let exportedMethods = {
   }
 };
 
-//get comment by post id 
+
 
 export default exportedMethods;

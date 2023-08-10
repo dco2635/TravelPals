@@ -5,9 +5,10 @@ import validate from "../validate.js";
 let exportedMethods = {
   async getAllPosts() {
     const postsCollection = await posts();
-    const postList = await postCollection.find({}).toArray();
+    const postList = await postsCollection.find({}).toArray();
     return postList; //we want to filter out the object id and other irrelevant information for our feed
   },
+
 
   async createPost(userId, userName, title, body) {
     const userCollection = await users();
@@ -40,6 +41,13 @@ let exportedMethods = {
     const myPost = await userCollection.find({ newPost }).toArray();
 
     return myPost;
+  },
+  async getPostById(postId) {
+    const postsCollection = await posts();
+    validate.checkId(id);
+    const posts = await postsCollection.findOne({ _id: ObjectId(postId) });
+    if (!posts) throw "Error: Post not found";
+    return posts;
   },
   async deletePost(postId) {
     validate.checkId(postId);
@@ -79,7 +87,7 @@ let exportedMethods = {
     title = validate.checkString(title);
     body = validate.checkString(body);
 
-    const foundPost = await postCollection.updateOne(
+    const foundPost = await postsCollection.updateOne(
       { _id: new Object(postId) },
       { $set: { userId: userId, userName: userName, title: title, body: body } }
     );
@@ -91,11 +99,70 @@ let exportedMethods = {
 
     // const updatedPost = await postCollection.updateOne()
   },
-  //deleting post
-  //updating post
-  //updating likes
+  async getUserByUserName(userName){
+    userName = validate.checkString(userName);
 
-  //getpost by username implementing a search function
+    const postsCollection = await posts();
+    
+    const user = await postsCollection.findOne({ userName: userName });
+
+    if (!user) throw "Error: User not found";
+    return user;
+  },
+  async likePost(postId) {
+    const userCollection = await users();
+    const postsCollection = await posts();
+
+    const chosenPost = this.getPostById(postId);
+    const updatedlikes = chosenPost.likes + 1;
+
+
+    const foundPost = await postsCollection.updateOne(
+      { _id: new Object(postId) },
+      { $set: { likes: updatedlikes} }
+    );
+
+    const updateUserPost = await userCollection.findOneAndUpdate(
+      { "posts._id": new ObjectId(foundPost._id) },
+      { $set: { posts: { _id: foundPost._id } } }
+    );
+
+    // const updatedPost = await postCollection.updateOne()
+  },
+  async unlikePost(postId) {
+    const userCollection = await users();
+    const postsCollection = await posts();
+
+    const chosenPost = this.getPostById(postId);
+    const updatedlikes = chosenPost.likes - 1;
+
+
+    const foundPost = await postsCollection.updateOne(
+      { _id: new Object(postId) },
+      { $set: { likes: updatedlikes} }
+    );
+
+    const updateUserPost = await userCollection.findOneAndUpdate(
+      { "posts._id": new ObjectId(foundPost._id) },
+      { $set: { posts: { _id: foundPost._id } } }
+    );
+
+    // const updatedPost = await postCollection.updateOne()
+  }
+  
+  //deleting post / done!
+  //updating post / done!
+  //updating likes / done!
+
+  //getpost by username implementing a search function / done!
+
+
+
+
+
+  /// if time permits try and implement extra function: 
+  //Post History: This an additional feature on a user’s profile that will hold a history of all the posts the user made.
+  //getAllPost()
 };
 
 export default exportedMethods;

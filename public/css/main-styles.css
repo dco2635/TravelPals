@@ -4,3 +4,26 @@
 .imgWidth{
     max-width: 150px;
 }
+.hiddenText {
+    display: none;
+  }
+.panel {
+    padding: 0 18px;
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+  }
+  .btnCss{
+    display: inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    background-color: inherit;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+    border: 1px solid;
+    margin-bottom: 10px;
+  }

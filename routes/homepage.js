@@ -3,7 +3,7 @@ import express from 'express';
 import path from 'path';
 const router = express.Router();
 import userDataFunctions from "../data/users.js";
-import {friendData,postData} from "../data/index.js";
+import {friendData,postData, commentData} from "../data/index.js";
 import validate from "../validate.js";
 import { ObjectId } from 'mongodb';
 router.route('/').get(async (req, res) => {
@@ -29,9 +29,23 @@ router.route('/addpost').post(async (req, res) => {
    }
 });
 
+router.route('/addpost/id').get(async (req, res) => {
+  res.json("Succesful");
+});
 
 
+router.route('/addpost/id').post(async (req, res) => {
 
+
+  let userData= req.body;
+  try {
+   const newComment= await commentData.createComment(userData.userId, userData.postId, userData.text);
+   res.json(newComment);
+  }
+  catch(e) {
+   res.status(500).json({error: e});
+  }
+});
 
 
 router.route('/profile').get(async (req, res) => {

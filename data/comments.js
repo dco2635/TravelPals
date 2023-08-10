@@ -18,15 +18,17 @@ let exportedMethods = {
 
       
       
-      const addedComment = postsCollection.updateOne( 
+      const addedComment = await postsCollection.updateOne( 
         { _id: new ObjectId(postId) },
         { $push: { comments: newComment } });
 
         //How will we update the user collection? 
 
+        
+
         const updateUserPost = await userCollection.findOneAndUpdate(
-          { "posts._id": new ObjectId(addedComment.postId) },
-          { $set: { posts: { _id: addedComment.postId} } }
+          { "posts._id": new ObjectId(postId) },
+          { $set: { posts: { _id: postId} } }
         );
         //if this fails put "postId"
 

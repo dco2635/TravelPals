@@ -42,7 +42,7 @@ let exportedMethods = {
       phoneNumber: phoneNumber,
       password: hash,
       friends: [],
-      post: [],
+      posts: [],
       
     };
     const userCollection = await users();

@@ -3,7 +3,7 @@ import express from 'express';
 import path from 'path';
 const router = express.Router();
 import userDataFunctions from "../data/users.js";
-import {friendData} from "../data/index.js";
+import {friendData,postData} from "../data/index.js";
 import validate from "../validate.js";
 import { ObjectId } from 'mongodb';
 router.route('/').get(async (req, res) => {
@@ -15,6 +15,25 @@ router.route('/newsFeed').get(async (req, res) => {
 router.route('/addpost').get(async (req, res) => {
    res.render('post',{pageTitle:'Add Post'});
 });
+
+router.route('/addpost').post(async (req, res) => {
+   res.render('post',{pageTitle:'Add Post'});
+
+   let userData= req.body;
+   try {
+    const newPost= await postData.createPost(userData.userId, userData.userName, userData.title, userData.body);
+    res.json(newPost);
+   }
+   catch(e) {
+    res.status(500).json({error: e});
+   }
+});
+
+
+
+
+
+
 router.route('/profile').get(async (req, res) => {
    res.render('profile',{pageTitle:'Profile'});
  });

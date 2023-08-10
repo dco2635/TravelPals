@@ -6,11 +6,14 @@ import userDataFunctions from "../data/users.js";
 import {friendData,postData, commentData} from "../data/index.js";
 import validate from "../validate.js";
 import { ObjectId } from 'mongodb';
+import { posts } from '../config/mongoCollections.js';
 router.route('/').get(async (req, res) => {
   res.render('login',{pageTitle:'News Feed'});
 });
 router.route('/newsFeed').get(async (req, res) => {
-  res.render('newsFeed',{pageTitle:'News Feed'});
+  const post = await posts();
+  const data = await post.find({}).toArray();
+  res.render('newsFeed',{pageTitle:'News Feed',data:data});
 });
 router.route('/addpost').get(async (req, res) => {
    res.render('post',{pageTitle:'Add Post'});

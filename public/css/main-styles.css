@@ -1,3 +1,6 @@
 .topMargin{
     margin-top: 50px;
 }
+.imgWidth{
+    max-width: 150px;
+}

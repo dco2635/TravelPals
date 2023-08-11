@@ -18,9 +18,10 @@ router.route('/newsFeed').get(async (req, res) => {
 router.route('/search/:text').get(async (req, res) => {
   const search = req.params.text;
   const post = await posts();
-  const data = await post.find({}).toArray();
-  const result = data.filter(p=>p.userName.toLowerCase().includes(search.trim().toLowerCase()));
-  res.render('newsFeed',{pageTitle:'News Feed',data:result});
+  const result = await post.find({}).toArray();
+  const data = result.filter(p=>p.userName.toLowerCase().includes(search.trim().toLowerCase()));
+ console.log(data)
+  res.render('newsFeed',{pageTitle:'News Feed',data:data});
 });
 router.route('/addpost').get(async (req, res) => {
    res.render('post',{pageTitle:'Add Post'});

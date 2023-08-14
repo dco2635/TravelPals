@@ -7,6 +7,8 @@ import {friendData,postData, commentData} from "../data/index.js";
 import validate from "../validate.js";
 import { ObjectId } from 'mongodb';
 import { posts } from '../config/mongoCollections.js';
+
+
 router.route('/').get(async (req, res) => {
   res.render('login',{pageTitle:'News Feed'});
 });
@@ -63,13 +65,14 @@ router.route('/addpost/id').post(async (req, res) => {
 
   let userData= req.body;
   try {
-   const newComment= await commentData.createComment(userData.userId, userData.postId, userData.text);
+   const newComment= await commentData.createComment(userData.userName,userData.userId, userData.postId, userData.text);
    res.json(newComment);
   }
   catch(e) {
    res.status(500).json({error: e});
   }
 });
+
 
 
 router.route('/profile').get(async (req, res) => {
@@ -89,8 +92,6 @@ router.route('/profile').get(async (req, res) => {
   }
  
 });
-
-
 
 
  router.route('/logout').get(async (req, res) => {

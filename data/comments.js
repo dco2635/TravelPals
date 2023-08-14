@@ -4,13 +4,14 @@ import validate from "../validate.js";
 
 let exportedMethods = {
 
-  async createComment(userId, postId, text) {
+  async createComment(userName,userId, postId, text) {
     const userCollection = await users();
     const postsCollection = await posts();
     const commentCollection = await comments();
 
     const newComment = {  
         _id: new ObjectId(),
+        userName: userName,
         userId: userId,
         postId: postId, // idk where this comes from
         text: text

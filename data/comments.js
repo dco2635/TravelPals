@@ -2,6 +2,7 @@ import { posts,comments, users } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
 import validate from "../validate.js";
 
+
 let exportedMethods = {
 
   async createComment(userName,userId, postId, text) {

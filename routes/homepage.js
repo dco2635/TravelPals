@@ -18,6 +18,7 @@ router.route('/loadData').get(async (req, res) => {
  const data = await post.find({}).toArray();
   res.send(data)
  });
+ 
 
 router.route('/search/:text').get(async (req, res) => {
   const search = req.params.text;
@@ -30,10 +31,13 @@ router.route('/addpost').get(async (req, res) => {
    res.render('post',{pageTitle:'Add Post'});
 });
 
+
+
 router.route('/addpost').post(async (req, res) => {
    res.render('post',{pageTitle:'Add Post'});
 
    let userData= req.body;
+   console.log(userData)
    try {
     const newPost= await postData.createPost(userData.userId, userData.userName, userData.title, userData.body);
     res.json(newPost);
@@ -47,7 +51,13 @@ router.route('/addpost/id').get(async (req, res) => {
   res.json("Succesful");
 });
 
-
+router.route('/delete/:id').delete(async (req, res) => {
+  const id = req.params.id;
+  const post = await posts();
+  const result = await post.deleteOne({_id:new ObjectId(id)})
+  res.send(result)
+  
+});
 router.route('/addpost/id').post(async (req, res) => {
 
 

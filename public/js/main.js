@@ -79,12 +79,54 @@ script.onload = function() {
 
         const Edit = $('<button>')
         .text('Edit')
+        .attr('id','myBtn')
+        .attr('type','submit')
         .addClass('btn btnCss')
+        .click(function (event) {
+          $('#show')
+          .hide();
+
+          $('#searchForm')
+          .hide();
+
+          const heading = $('<h1>').text('Edit post')
+          .addClass('')
+          $('#modal').append(heading).show()
+          const title = $('<input>').val(showData.title)
+          .addClass('textField')
+          $('#modal').append(title).show()
+          const body = $('<input>').val(showData.body)
+          .addClass('textField')
+          $('#modal').append(body).show()
+
+          const btn = $('<button>').text('Continue')
+          .addClass('btn btnCss')
+          $('#modal').append(btn).show()
+
+          const cancel = $('<button>').text('Cancel')
+          .addClass('btn btnCss')
+          .click(function (event) {
+            location.href= 'http://localhost:3000/newsFeed'
+          })
+          $('#modal').append(cancel).show()
+          
+        })
 
         const Delete = $(`<button>`)
         .text('Delete')
+        .attr('id','delete')
         .addClass('btn btnCss')
-
+        .click(function (event) {
+            event.preventDefault();
+            const deleteUrl = `http://localhost:3000/delete/${encodeURIComponent(showData._id)}`;
+            $.ajax({
+                url: deleteUrl,
+                method: 'DELETE',
+              }).then(function (showData) {
+                
+              })
+              
+          });
     
 
         $('#show')
@@ -94,18 +136,60 @@ script.onload = function() {
         
       }
 
-      $('#show').on('click', 'a', function (event) {
+      $('#post-form').submit(function (event) {
         event.preventDefault();
-        const showUrl = $(this).attr('href');
-    
+        const title = $('#title').val().trim();
+        const body = $('#body').val().trim();
+        const titleInput = /^[A-Za-z0-9#@?]+$/.test(title)
+        const bodyInput = /^[A-Za-z0-9#@?]+$/.test(body)
+        if (title === '') {
+          $('#error-message')
+          .text('Invalid: Must enter title text')
+          .addClass('error')
+          .show();
+          $('#errorBody').hide()
+          return; 
+        } else if(body ===''){
+            $('#errorBody')
+            .text('Invalid: Must enter body text')
+            .addClass('error')
+            .show();
+            $('#error-message').hide()
+            return; 
+        }
+        // else if(!titleInput){
+        //     $('#error-message')
+        //   .text('Invalid: Special characters not allowed')
+        //   .addClass('error')
+        //   .show();
+        // }else if(!bodyInput){
+        //     $('#errorBody')
+        //   .text('Invalid: Special characters not allowed')
+        //   .addClass('error')
+        //   .show();
+        // }
+        else {
+          $('#error-message').hide();
+          $('#errorBody').hide();
+        const searchUrl = `http://localhost:3000/addpost`;
+        let data = {
+            title:title,
+            body:body
+        }
         $.ajax({
-          url: showUrl,
-          method: 'GET',
-        }).then(function (showData) {
-          displayShowDetails(showData);
+          url: searchUrl,
+          method: 'POST',
+          contentType: 'application/json', 
+          data: JSON.stringify(data)
+        }).then(function (data) {
+          location.href('http://localhost:3000/newsFeed')
         });
+      }
       });
+
+      
   });
+
   
 };
 document.head.appendChild(script);

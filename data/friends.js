@@ -51,8 +51,11 @@ let exportedMethods = {
       userId: userId,
     };
 
-    const addedFriend = await userCollection.updateOne(
-      { _id: ObjectId(userId) },
+    
+    console.log(userId);
+
+    let addedFriend = await userCollection.updateOne(
+      { _id: new ObjectId(userId) },
       { $push: { friends: newFriend } }
     );
 

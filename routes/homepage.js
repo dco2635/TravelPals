@@ -90,8 +90,8 @@ router.route('/profile').get(async (req, res) => {
    res.render('profile',{pageTitle:'Profile'});
  });
 
- router.route('/profile').post(async (req, res) => {
-  res.render('profile',{pageTitle:'Profile'});
+ router.route('/addfriends').post(async (req, res) => {
+  
 
   let userData = req.body;
   try {

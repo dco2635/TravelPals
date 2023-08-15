@@ -149,7 +149,8 @@ router.route('/register').get(async (req, res) => {
    res.render('partials/register',{pageTitle:'Register'});
 });
 
-router.route('/register').post(async (req, res) => {
+router.
+route('/register').post(async (req, res) => {
    let userData = req.body;
    console.log(req.body);
  
@@ -171,7 +172,7 @@ router.route('/register').post(async (req, res) => {
      
      
    } catch (e) {
-     return res.status(400).json({ error: e });
+     return res.status(400).json({ error: e.message });
    }
  
  

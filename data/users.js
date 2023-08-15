@@ -27,7 +27,7 @@ let exportedMethods = {
     phoneNumber = validate.checkPhoneNumber(phoneNumber);
     userName = validate.checkString(userName);
     userName= userName.toLowerCase();
-    password= password.checkString();
+    
    
     const hash = await bcrypt.hash(password,saltRounds)
 
@@ -136,7 +136,7 @@ let exportedMethods = {
   async checkUser(userName, password){
     userName = validate.checkString(userName);
     userName= userName.toLowerCase();
-    password= password.checkString();
+   
     
     const userCollection = await users();
 

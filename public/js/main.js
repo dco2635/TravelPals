@@ -170,7 +170,7 @@ script.onload = function() {
                 data: JSON.stringify(data)
               }).then(function (showData) {
                 location.href ='http://localhost:3000/newsFeed'
-                location.href='http://localhost:3000/newsFeed'
+                
               })
           })
           $('#modal').append(btn).show()
@@ -342,8 +342,9 @@ script.onload = function() {
           data:JSON.stringify(data)
         }).then(function (data) {
           $('#login-error').hide();
-          localStorage.setItem("userInfo", username);
-          location.href ='http://localhost:3000/newsFeed'
+          const message = $('<h1>').text('Registration Successful')
+          .addClass('')
+          $('#registration').append(message).show()
          
         })
         .catch(e =>{

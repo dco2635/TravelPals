@@ -3,8 +3,42 @@ var script = document.createElement('script');
 script.src = 'https://code.jquery.com/jquery-3.6.0.min.js';
 script.onload = function() {
   $(document).ready(function () {
-    
+
+    function isLoggedIn(){
+      const alreadyLoggedIn = localStorage.getItem("userInfo");
+      if(alreadyLoggedIn){
+        const sidebar = $('#sidebar');
+        const newsFeed = $('<a>')
+        .attr('href', '/newsFeed')
+        .text('News Feed')
+        .addClass('list-group-item list-group-item-action')
+       
+        const addpost = $('<a>')
+        .attr('href', '/addpost')
+        .text('Add Post')
+        .addClass('list-group-item list-group-item-action')
+
+        const profile = $('<a>')
+        .attr('href', '/profile')
+        .text('My Profile')
+        .addClass('list-group-item list-group-item-action')
+
+        const logout = $('<a>')
+        .attr('href', '/logout')
+        .text('Logout')
+        .addClass('list-group-item list-group-item-action')
+        .click(function (event) {
+          event.preventDefault();
+          localStorage.removeItem("userInfo");
+          location.href = 'http://localhost:3000/'
+        })
+        sidebar.append(newsFeed,addpost,profile,logout);
+        return true;
+      }
+      return false;
+    }
     function fetchData() {
+      
       const showList = $('#show');
       $.ajax({
         url: 'http://localhost:3000/loadData',
@@ -18,17 +52,25 @@ script.onload = function() {
         showList.show();
       });
     }
-    fetchData();
+   
+    if(isLoggedIn()){
+      fetchData();
+    }else{
+      $('#searchForm').hide();
+      $('#logout').hide();
+      $('#addpost').hide();
+      $('#profile').hide();
+    }
   
     $('#searchForm').submit(function (event) {
         event.preventDefault();
         const searchTerm = $('#search_term').val().trim();
-    
+        console.log(event)
         if (searchTerm === '') {
-          $('#error-message').text('Please enter a search term').show();
+          $('#search-error').text('Please enter a search term').show();
           return; 
         } else {
-          $('#error-message').hide();
+          $('#search-error').hide();
         }
     
         const searchUrl = `http://localhost:3000/search/${encodeURIComponent(searchTerm)}`;
@@ -50,6 +92,8 @@ script.onload = function() {
          
         });
       });
+     
+
       function display(showData) {
        
         const user_name = $('<h1>').text(showData.userName)
@@ -85,6 +129,7 @@ script.onload = function() {
         .attr('type','submit')
         .addClass('btn btnCss')
         .click(function (event) {
+          event.preventDefault()
           $('#show')
           .hide();
 
@@ -111,19 +156,20 @@ script.onload = function() {
             const titleVal = document.getElementById('editTitle').value;
             const bodyVal = document.getElementById('editBody').value
             let data ={
-              postId:showData.postId,
               userId:showData.userId,
               userName:showData.userName,
+              postId:showData._id,
               title:titleVal,
               body:bodyVal,
             }
+        
             $.ajax({
                 url: editUrl,
                 method: 'PUT',
                 contentType: 'application/json', 
                 data: JSON.stringify(data)
               }).then(function (showData) {
-                fetchData();
+                location.href ='http://localhost:3000/newsFeed'
               })
           })
           $('#modal').append(btn).show()
@@ -131,6 +177,7 @@ script.onload = function() {
           const cancel = $('<button>').text('Cancel')
           .addClass('btn btnCss')
           .click(function (event) {
+            event.preventDefault();
            location.href ='http://localhost:3000/newsFeed'
           })
           $('#modal').append(cancel).show()
@@ -215,10 +262,135 @@ script.onload = function() {
       }
       });
 
+      $('#searchFriends').submit(function (event) {
+        event.preventDefault();
+        const userName = $('#search_term').val().trim();
+    
+        if (userName === '') {
+          $('#error-message').text('Please enter a search term').show();
+          return; 
+        } else {
+          $('#error-message').hide();
+        }
+    
+        const searchUrl = `http://localhost:3000/addfriends`;
+        let body ={
+          userName:userName,
+          userId:'64d2f36a11d02df99ad95594'
+        }
+        $.ajax({
+          url: searchUrl,
+          method: 'POST',
+          contentType: 'application/json', 
+          data: JSON.stringify(body)
+        }).then(function (data) {
+          const friendList = $('#friendList');
+          friendList.empty();
+    
+          data.forEach(function (result) {
+            const show = result;
+            const listItem = createTemplate(show);
+            friendList.append(listItem);
+          });
+    
+          friendList.show();
+         
+        });
+      });
+      function createTemplate(data){
+        const list = $('friends')
+        const user_name = $('<h1>').text(data.userName)
+        .addClass('')
+
+        list.append(user_name)
+      }
+
+      $('#registration').submit(function (event) {
+        event.preventDefault();
+        const firstname = $('#firstname').val().trim();
+        const lastname = $('#lastname').val().trim();
+        const email = $('#email').val().trim();
+        const phoneNumber = $('#phoneNumber').val().trim();
+        const username = $('#username').val().trim();
+        const password = $('#password').val().trim();
+        if (username === '') {
+          $('#username-error').text('Please enter username').show();
+          return; 
+        } else if (password === '') {
+          $('#password-error').text('Please enter password').show();
+          return; 
+        } else {
+          $('#password-error').hide();
+          $('#username-error').hide();
+        }
       
+        const searchUrl = `http://localhost:3000/register`;
+        const data ={
+          firstName : firstname,
+         lastName : lastname,
+          email:email,
+          phoneNumber:phoneNumber,
+          userName:username,
+          password:password
+        }
+        $.ajax({
+          url: searchUrl,
+          method: 'POST',
+          contentType: 'application/json', 
+          data:JSON.stringify(data)
+        }).then(function (data) {
+          $('#login-error').hide();
+          localStorage.setItem("userInfo", username);
+          location.href ='http://localhost:3000/newsFeed'
+         
+        })
+        .catch(e =>{
+          $('#error').text(e.responseJSON.error).show();
+        })
+      })
   });
 
   
 };
 document.head.appendChild(script);
+
+
+const login = ()=>{
+  const username = $('#username').val().trim();
+  const password = $('#password').val().trim();
+  if (username === '') {
+    $('#username-error').text('Please enter username').show();
+    return; 
+  } else if (password === '') {
+    $('#password-error').text('Please enter password').show();
+    return; 
+  } else {
+    $('#password-error').hide();
+    $('#username-error').hide();
+  }
+
+  const searchUrl = `http://localhost:3000/login`;
+  const data ={
+    userName:username,
+    password:password
+  }
+  $.ajax({
+    url: searchUrl,
+    method: 'POST',
+    contentType: 'application/json', 
+    data:JSON.stringify(data)
+  }).then(function (data) {
+    $('#login-error').hide();
+    localStorage.setItem("userInfo", username);
+    location.href ='http://localhost:3000/newsFeed'
+   
+  })
+  .catch(e =>{
+    $('#login-error').text(e.responseJSON.error).show();
+  })
+  
+}
+
+
+
 

@@ -1,5 +1,5 @@
 
- <div>
+ <div id="login">
       <section>
             <h2>What is TravelPal?</h2>
             <p>TravelPal serves as a social media application in which individuals can find travel companions among
@@ -13,25 +13,28 @@
                <img src="https://heymondo.com/blog/wp-content/uploads/2021/03/shutterstock_371958268_compressed.jpg"
                 alt="USA Map" class="image">
              
-        <form>
+    
      <div class="form-group">
             <label for="inputPassword4">Username</label>
             <input  class="form-control"
-            type="text" id="username" name="username" placeholder="Enter your username" required>
+            type="text" id="username" name="username" placeholder="Enter your username">
              </div>
-                 
+               <span id="username-error" class="error"></span>
              <div class="form-group">
             <label for="inputPassword4">Password</label>
             <input class="form-control"
-            type="password" id="password" name="password" placeholder="Enter your password" required>
+            type="password" id="password" name="password" placeholder="Enter your password">
              </div>
+          <span id="password-error" class="error"></span>
+
+          <span id="login-error" class="error"></span>
              <div class="form-group">
-              <button type="submit" class="btn btn-primary">Login</button>
+              <button type="submit" class="btn btn-primary" id="login" onclick="login()">Login</button>
         
-            <button type="submit" class="btn btn-primary">Registration</button>
+             <a href="/register" class="btn btn-primary">Registration</a>
              </div>
 
-</form>
+
         
     </div>
  </div>

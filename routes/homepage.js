@@ -10,6 +10,7 @@ import { posts } from '../config/mongoCollections.js';
 
 
 router.route('/').get(async (req, res) => {
+  
   res.render('login',{pageTitle:'News Feed'});
 });
 router.route('/newsFeed').get(async (req, res) => {
@@ -96,7 +97,7 @@ router.route('/profile').get(async (req, res) => {
   let userData = req.body;
   try {
     const newUser = await friendData.createFriendUserName(userData.userName, userData.userId); //requires req.session.user
-    
+    res.status(200)
     //res.json(newUser);
   } catch (e) {
     res.status(500).json({error: e});
@@ -130,9 +131,8 @@ router.route('/login').post(async (req, res) => {
 
   try {
     let authUser= await userDataFunctions.checkUser(userInfo.userName, userInfo.password);
-    res.json(authUser);
    let user = {_id: authUser._id, phoneNumber: authUser.phoneNumber, userName: authUser.userName}; //need to update req.session.user look at nader's code for reference
-   console.log(user);
+    res.send(user)
     
   }
   catch(e){
@@ -142,7 +142,7 @@ router.route('/login').post(async (req, res) => {
 });
 
 router.route('/register').get(async (req, res) => {
-   res.render('partials/register',{pageTitle:'Register'});
+   res.render('register',{pageTitle:'Register'});
 });
 
 router.route('/register').post(async (req, res) => {

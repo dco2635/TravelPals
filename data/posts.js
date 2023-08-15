@@ -85,15 +85,21 @@ let exportedMethods = {
     title = validate.checkString(title);
     body = validate.checkString(body);
 
+    let newPostId= new ObjectId(postId)
+    //console.log(postId);
+   
     const foundPost = await postsCollection.updateOne(
-      { _id: new Object(postId) },
+      { _id: newPostId },
       { $set: { userId: userId, userName: userName, title: title, body: body } }
     );
+    console.log(foundPost);
 
     const updateUserPost = await userCollection.findOneAndUpdate(
       { "posts._id": new ObjectId(foundPost._id) },
       { $set: { posts: { _id: foundPost._id } } }
     );
+
+    console.log(updateUserPost);
 
     // const updatedPost = await postCollection.updateOne()
   },

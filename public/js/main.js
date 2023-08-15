@@ -52,6 +52,8 @@ script.onload = function() {
       });
       function display(showData) {
        
+        const user_name = $('<h1>').text(showData.userName)
+        .addClass('')
        const img = $('<img>').attr('src', 'https://heymondo.com/blog/wp-content/uploads/2021/03/shutterstock_371958268_compressed.jpg');
         const title = $('<h1>').text(showData.title)
         .addClass('card-title')
@@ -59,7 +61,7 @@ script.onload = function() {
         const dl = $('<dl>');
         const commentList = $('<div>');
         showData.comments.forEach(function (comment) {
-            commentList.append($('<span>').text('userName: ' + comment.text));
+            commentList.append($('<span>').text(comment.userName ? comment.userName: '' + ' : ' + comment.text));
         });
         dl.append($('<dt>').text('Comments: '), $('<dd>').append(commentList));
 
@@ -94,19 +96,42 @@ script.onload = function() {
           $('#modal').append(heading).show()
           const title = $('<input>').val(showData.title)
           .addClass('textField')
+          .attr('id','editTitle')
           $('#modal').append(title).show()
           const body = $('<input>').val(showData.body)
           .addClass('textField')
+          .attr('id','editBody')
           $('#modal').append(body).show()
 
           const btn = $('<button>').text('Continue')
           .addClass('btn btnCss')
+          .click(function(event){
+            event.preventDefault();
+            const editUrl = `http://localhost:3000/edit`;
+            const titleVal = document.getElementById('editTitle').value;
+            const bodyVal = document.getElementById('editBody').value
+            let data ={
+              postId:showData.postId,
+              userId:showData.userId,
+              userName:showData.userName,
+              title:titleVal,
+              body:bodyVal,
+            }
+            $.ajax({
+                url: editUrl,
+                method: 'PUT',
+                contentType: 'application/json', 
+                data: JSON.stringify(data)
+              }).then(function (showData) {
+                fetchData();
+              })
+          })
           $('#modal').append(btn).show()
 
           const cancel = $('<button>').text('Cancel')
           .addClass('btn btnCss')
           .click(function (event) {
-            location.href= 'http://localhost:3000/newsFeed'
+           location.href ='http://localhost:3000/newsFeed'
           })
           $('#modal').append(cancel).show()
           
@@ -123,14 +148,14 @@ script.onload = function() {
                 url: deleteUrl,
                 method: 'DELETE',
               }).then(function (showData) {
-                
+                fetchData();
               })
               
           });
     
 
         $('#show')
-          .append(img,title,body,dl,likes,Edit,Delete,Comment)
+          .append(user_name,img,title,body,dl,likes,Edit,Delete,Comment)
           .show();
     
         
@@ -140,8 +165,8 @@ script.onload = function() {
         event.preventDefault();
         const title = $('#title').val().trim();
         const body = $('#body').val().trim();
-        const titleInput = /^[A-Za-z0-9#@?]+$/.test(title)
-        const bodyInput = /^[A-Za-z0-9#@?]+$/.test(body)
+        const titleInput = /^[A-Za-z0-9#?.!]+$/.test(title)
+        const bodyInput = /^[A-Za-z0-9#?.!]+$/.test(body)
         if (title === '') {
           $('#error-message')
           .text('Invalid: Must enter title text')
@@ -171,19 +196,22 @@ script.onload = function() {
         else {
           $('#error-message').hide();
           $('#errorBody').hide();
-        const searchUrl = `http://localhost:3000/addpost`;
+        const url = `http://localhost:3000/addNewPost`;
         let data = {
+            userId: '64d2f47e11d02df99ad95595',
+            userName: 'anne34',
             title:title,
             body:body
         }
         $.ajax({
-          url: searchUrl,
+          url: url,
           method: 'POST',
           contentType: 'application/json', 
           data: JSON.stringify(data)
         }).then(function (data) {
           location.href('http://localhost:3000/newsFeed')
         });
+        
       }
       });
 

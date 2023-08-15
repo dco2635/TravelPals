@@ -35,12 +35,11 @@ router.route('/addpost').get(async (req, res) => {
 
 
 
-router.route('/addpost').post(async (req, res) => {
-   res.render('post',{pageTitle:'Add Post'});
-
+router.route('/addNewPost').post(async (req, res) => {
+  
    let userData= req.body;
-   console.log(userData)
    try {
+ 
     const newPost= await postData.createPost(userData.userId, userData.userName, userData.title, userData.body);
     res.json(newPost);
    }
@@ -53,6 +52,18 @@ router.route('/addpost/id').get(async (req, res) => {
   res.json("Succesful");
 });
 
+router.route('/edit').put(async (req, res) => {
+  let userData= req.body;
+   try {
+ 
+    const newPost= await postData.updatePost(userData.postId,userData.userId, userData.userName, userData.title, userData.body);
+    res.json(newPost);
+   }
+   catch(e) {
+    res.status(500).json({error: e});
+   }
+  
+});
 router.route('/delete/:id').delete(async (req, res) => {
   const id = req.params.id;
   const post = await posts();

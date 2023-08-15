@@ -31,14 +31,14 @@ let exportedMethods = {
       
     };
     const storedPost = await postsCollection.insertOne(newPost);
-    const addedPost = await userCollection.updateOne(
+   // const addedPost = await userCollection.updateOne(
       //talk to David about this
-      { _id: new ObjectId(userId) },
-      { $push: { posts: newPost } }
-    );
+   //   { _id: new ObjectId(userId) },
+   //   { $push: { posts: newPost } }
+   // );
    // const myPost = await userCollection.find({ newPost }).toArray();
 
-    return;
+    return storedPost;
   },
   async getPostById(postId) {
     const postsCollection = await posts();

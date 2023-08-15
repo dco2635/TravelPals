@@ -200,8 +200,9 @@ script.onload = function() {
         let data = {
             userId: '64d2f47e11d02df99ad95595',
             userName: 'anne34',
-            title:title,
-            body:body
+            body:body,
+            title:title
+          
         }
         $.ajax({
           url: url,
@@ -209,7 +210,7 @@ script.onload = function() {
           contentType: 'application/json', 
           data: JSON.stringify(data)
         }).then(function (data) {
-          location.href('http://localhost:3000/newsFeed')
+          location.href='http://localhost:3000/newsFeed'
         });
         
       }

@@ -42,6 +42,7 @@ router.route('/addNewPost').post(async (req, res) => {
  
     const newPost= await postData.createPost(userData.userId, userData.userName, userData.title, userData.body);
     res.json(newPost);
+    console.log(newPost);
    }
    catch(e) {
     res.status(500).json({error: e});
@@ -78,6 +79,7 @@ router.route('/addpost/id').post(async (req, res) => {
   try {
    const newComment= await commentData.createComment(userData.userName,userData.userId, userData.postId, userData.text);
    res.json(newComment);
+   
   }
   catch(e) {
    res.status(500).json({error: e});

@@ -63,7 +63,7 @@ let exportedMethods = {
 
     const myFriend = await userCollection.find({ newFriend }).toArray();
 
-    return myFriend;
+    return storedFriend;
   },
 
   // we need _id that represents the relationship | friend _id | user_id

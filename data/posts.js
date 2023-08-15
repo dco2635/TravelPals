@@ -31,14 +31,14 @@ let exportedMethods = {
       
     };
     const storedPost = await postsCollection.insertOne(newPost);
-    const addedPost = await userCollection.updateOne(
+   // const addedPost = await userCollection.updateOne(
       //talk to David about this
-      { _id: new ObjectId(userId) },
-      { $push: { posts: newPost } }
-    );
+   //   { _id: new ObjectId(userId) },
+   //   { $push: { posts: newPost } }
+   // );
    // const myPost = await userCollection.find({ newPost }).toArray();
 
-    return;
+    return storedPost;
   },
   async getPostById(postId) {
     const postsCollection = await posts();
@@ -85,15 +85,21 @@ let exportedMethods = {
     title = validate.checkString(title);
     body = validate.checkString(body);
 
+    let newPostId= new ObjectId(postId)
+    //console.log(postId);
+   
     const foundPost = await postsCollection.updateOne(
-      { _id: new Object(postId) },
+      { _id: newPostId },
       { $set: { userId: userId, userName: userName, title: title, body: body } }
     );
+    console.log(foundPost);
 
     const updateUserPost = await userCollection.findOneAndUpdate(
       { "posts._id": new ObjectId(foundPost._id) },
       { $set: { posts: { _id: foundPost._id } } }
     );
+
+    console.log(updateUserPost);
 
     // const updatedPost = await postCollection.updateOne()
   },

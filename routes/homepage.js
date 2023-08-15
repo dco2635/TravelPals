@@ -43,6 +43,7 @@ router.route('/addNewPost').post(async (req, res) => {
  
     const newPost= await postData.createPost(userData.userId, userData.userName, userData.title, userData.body);
     res.json(newPost);
+    console.log(newPost);
    }
    catch(e) {
     res.status(500).json({error: e});
@@ -55,10 +56,12 @@ router.route('/addpost/id').get(async (req, res) => {
 
 router.route('/edit').put(async (req, res) => {
   let userData= req.body;
+  console.log(userData);
    try {
  
     const newPost= await postData.updatePost(userData.postId,userData.userId, userData.userName, userData.title, userData.body);
     res.json(newPost);
+    console.log(newPost);
    }
    catch(e) {
     res.status(500).json({error: e});
@@ -79,6 +82,7 @@ router.route('/addpost/id').post(async (req, res) => {
   try {
    const newComment= await commentData.createComment(userData.userName,userData.userId, userData.postId, userData.text);
    res.json(newComment);
+   
   }
   catch(e) {
    res.status(500).json({error: e});
@@ -145,7 +149,8 @@ router.route('/register').get(async (req, res) => {
    res.render('register',{pageTitle:'Register'});
 });
 
-router.route('/register').post(async (req, res) => {
+router.
+route('/register').post(async (req, res) => {
    let userData = req.body;
    console.log(req.body);
  
@@ -167,7 +172,7 @@ router.route('/register').post(async (req, res) => {
      
      
    } catch (e) {
-     return res.status(400).json({ error: e });
+     return res.status(400).json({ error: e.message });
    }
  
  

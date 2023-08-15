@@ -7,6 +7,10 @@
 .hiddenText {
     color: red;
   }
+  .sidebar{
+    margin-top: -20px;
+    margin-left: -20px;
+  }
 .search {
     margin:20px;
     text-align: center;

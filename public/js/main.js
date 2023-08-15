@@ -40,17 +40,22 @@ script.onload = function() {
     function fetchData() {
       
       const showList = $('#show');
+      $('#loading').show() 
       $.ajax({
         url: 'http://localhost:3000/loadData',
         method: 'GET',
       }).then(function (data) {
         showList.empty();
+        $('#loading').hide() 
         data.forEach(function (show) {
           const listItem = display(show);
           showList.append(listItem);
         });
         showList.show();
-      });
+      })
+      .catch(e=>{
+        $('#loading').show()
+      })
     }
    
     if(isLoggedIn()){
@@ -172,15 +177,19 @@ script.onload = function() {
               title:titleVal,
               body:bodyVal,
             }
-        
+            $('#loading').show() 
             $.ajax({
                 url: editUrl,
                 method: 'PUT',
                 contentType: 'application/json', 
                 data: JSON.stringify(data)
               }).then(function (showData) {
+                $('#loading').hide() 
                 location.href ='http://localhost:3000/newsFeed'
                 
+              })
+              .catch(e=>{
+                $('#loading').hide() 
               })
           })
           $('#modal').append(btn).show()
@@ -199,14 +208,20 @@ script.onload = function() {
         .text('Delete')
         .attr('id','delete')
         .addClass('btn btnCss')
+
         .click(function (event) {
             event.preventDefault();
+          $('#loading').show() 
             const deleteUrl = `http://localhost:3000/delete/${encodeURIComponent(showData._id)}`;
             $.ajax({
                 url: deleteUrl,
                 method: 'DELETE',
               }).then(function (showData) {
                 fetchData();
+                $('#loading').hide() 
+              })
+              .catch(e=>{
+                $('#loading').hide() 
               })
               
           });
@@ -262,14 +277,19 @@ script.onload = function() {
             title:title
           
         }
+        $('#loading').show() 
         $.ajax({
           url: url,
           method: 'POST',
           contentType: 'application/json', 
           data: JSON.stringify(data)
         }).then(function (data) {
+          $('#loading').hide() 
           location.href='http://localhost:3000/newsFeed'
-        });
+        })
+        .catch(e=>{
+          $('#loading').hide() 
+        })
         
       }
       });
@@ -290,12 +310,14 @@ script.onload = function() {
           userName:userName,
           userId:'64d2f36a11d02df99ad95594'
         }
+        $('#loading').show() 
         $.ajax({
           url: searchUrl,
           method: 'POST',
           contentType: 'application/json', 
           data: JSON.stringify(body)
         }).then(function (data) {
+          $('#loading').hide() 
           const friendList = $('#friendList');
           friendList.empty();
     
@@ -307,7 +329,10 @@ script.onload = function() {
     
           friendList.show();
          
-        });
+        })
+        .catch(e=>{
+          $('#loading').hide() 
+        })
       });
       function createTemplate(data){
         const list = $('friends')
@@ -393,6 +418,7 @@ const login = ()=>{
     userName:username,
     password:password
   }
+  $('#loading').show() 
   $.ajax({
     url: searchUrl,
     method: 'POST',
@@ -400,12 +426,15 @@ const login = ()=>{
     data:JSON.stringify(data)
   }).then(function (data) {
     $('#login-error').hide();
+    $('#loading').hide() 
     localStorage.setItem("userInfo", username);
     location.href ='http://localhost:3000/newsFeed'
    
   })
   .catch(e =>{
+    $('#loading').hide() 
     $('#login-error').text(e.responseJSON.error).show();
+    
   })
   
 }

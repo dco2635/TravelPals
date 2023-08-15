@@ -114,9 +114,6 @@ router.route('/profile').get(async (req, res) => {
    res.render('logout',{pageTitle:'Logout'});
 });
 
-// router.route('/login').get(async (req, res) => {
-//    res.render('partials/login',{pageTitle:'Login'});
-// });
 
 router.route('/login').post(async (req, res) => {
   let userInfo = req.body; 

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TravelPal - Find Your Perfect Travel Companion</title>
+    <style>
+        body {
+
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+
+        }
+
+        .header {
+
+            background: linear-gradient(135deg, #F4A460, #4CAF50, #1e90ff);
+            padding: 10px;
+            color: #fff;
+            text-align: center;
+
+        }
+
+        .navbar ul {
+
+
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            background-color: #222;
+            color: #fff;
+            padding: 5px 0;
+            text-align: center;
+            font-size: 18px;
+
+
+        }
+
+        .main-content {
+
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            text-align: justify;
+            line-height: 1.6;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+        }
+
+        .registration-form {
+
+            max-width: 400px;
+            margin: 20px;
+            padding: 20px;
+            border: 4px solid #1e90ff;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #fff;
+
+        }
+
+
+        .form-title {
+
+            color: #1e90ff;
+            font-size: 24px;
+            margin-bottom: 20px;
+            
+        }
+
+        .form-group {
+
+            margin-bottom: 20px;
+
+        }
+
+        .form-group label {
+
+
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #555;
+            font-size: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="password"] {
+
+
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 2%;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            font-size: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+
+        }
+
+        .btn-container {
+
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 10px;
+
+
+        }
+
+        .registration-btn {
+
+
+            flex: 1;
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+            margin: 5px;
+
+
+        }
+
+        .registration-btn:hover {
+
+            background-color: #45a049;
+        }
+
+        .footer {
+
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #F4A460, #4CAF50, #1e90ff);
+            color: #fff;
+            margin-top: 40px;
+            width: 100%;
+
+        }
+    </style>
+
+</head>
+
+
+<body>
+    <header class="header">
+
+        <h1>TravelPal</h1>
+
+
+    </header>
+
+    <nav class="navbar">
+
+        <ul>
+
+            <li><a href="./Login.html">Login</a></li>
+
+        </ul>
+
+    </nav>
+
+    <main class="main-content">
+
+        <div class="registration-form">
+
+            <form>
+
+                <h2 class="form-title">Register an Account</h2>
+
+                <div class="form-group">
+
+                    <label for="username">Username:</label>
+
+                    <input type="text" id="username" name="username" placeholder="Enter your username" required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="password">Password:</label>
+
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="confirmPassword">Confirm Password:</label>
+
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="email">Email Address:</label>
+
+                    <input type="text" id="email" name="email" placeholder="Enter your email address" required>
+
+                </div>
+
+                
+                <div class="form-group">
+
+                    <label for="role">Role:</label>
+
+                    <input type="text" id="role" name="role" placeholder="Enter your role" required>
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="phoneNumber">Phone Number:</label>
+
+                    <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" required>
+
+                </div>
+
+
+                <p class="error" id="error" hidden></p>
+
+
+                <div class="btn-container">
+
+                    <button class="registration-btn" type="submit">Register</button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </main>
+
+    <footer class="footer">
+
+        &copy; 2023 TravelPal. All rights reserved.
+
+    </footer>
+
+</body>
+
+</html>

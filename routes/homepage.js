@@ -55,6 +55,7 @@ router.route('/addpost/id').get(async (req, res) => {
 
 router.route('/edit').put(async (req, res) => {
   let userData= req.body;
+  console.log(userData);
    try {
  
     const newPost= await postData.updatePost(userData.postId,userData.userId, userData.userName, userData.title, userData.body);

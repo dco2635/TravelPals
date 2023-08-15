@@ -123,7 +123,7 @@ script.onload = function() {
                 contentType: 'application/json', 
                 data: JSON.stringify(data)
               }).then(function (showData) {
-                fetchData();
+                location.href='http://localhost:3000/newsFeed'
               })
           })
           $('#modal').append(btn).show()

@@ -59,6 +59,7 @@ router.route('/edit').put(async (req, res) => {
  
     const newPost= await postData.updatePost(userData.postId,userData.userId, userData.userName, userData.title, userData.body);
     res.json(newPost);
+    console.log(newPost);
    }
    catch(e) {
     res.status(500).json({error: e});

@@ -60,6 +60,15 @@ script.onload = function() {
       $('#logout').hide();
       $('#addpost').hide();
       $('#profile').hide();
+      const msg = $('<h1>')
+      .text('Unauthorized Access')
+      .addClass('card-text')
+
+      const link = $('<a>')
+        .attr('href', '/')
+        .text('Back To Login')
+        .addClass('card-text')
+      $('#unAuthorized').append(msg,link).show();
     }
   
     $('#searchForm').submit(function (event) {
@@ -98,7 +107,8 @@ script.onload = function() {
        
         const user_name = $('<h1>').text(showData.userName)
         .addClass('')
-       const img = $('<img>').attr('src', 'https://heymondo.com/blog/wp-content/uploads/2021/03/shutterstock_371958268_compressed.jpg');
+       const img = $('<img>').
+       attr('src', 'https://heymondo.com/blog/wp-content/uploads/2021/03/shutterstock_371958268_compressed.jpg');
         const title = $('<h1>').text(showData.title)
         .addClass('card-title')
       
@@ -344,7 +354,13 @@ script.onload = function() {
           $('#login-error').hide();
           const message = $('<h1>').text('Registration Successful')
           .addClass('')
-          $('#registration').append(message).show()
+
+          const goBack = $('<a>')
+          .text('Back To Login')
+          .attr('href', '/')
+          .addClass('')
+
+          $('#registration').append(message,goBack).show()
          
         })
         .catch(e =>{

@@ -28,7 +28,7 @@ let exportedMethods = {
       title: title,
       comments: [],
       likes: 0,
-      
+      likedBy:[]
     };
     const storedPost = await postsCollection.insertOne(newPost);
    // const addedPost = await userCollection.updateOne(

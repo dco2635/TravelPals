@@ -43,7 +43,7 @@ router.route('/addNewPost').post(async (req, res) => {
  
     const newPost= await postData.createPost(userData.userId, userData.userName, userData.title, userData.body);
     res.json(newPost);
-    console.log(newPost);
+    
    }
    catch(e) {
     res.status(500).json({error: e});
@@ -142,6 +142,10 @@ router.route('/login').post(async (req, res) => {
   
 });
 
+router.route('/likes').post(async (req, res) => {
+  
+});
+
 router.route('/register').get(async (req, res) => {
    res.render('register',{pageTitle:'Register'});
 });
@@ -149,8 +153,6 @@ router.route('/register').get(async (req, res) => {
 router.
 route('/register').post(async (req, res) => {
    let userData = req.body;
-   console.log(req.body);
- 
    if (!userData || Object.keys(userData).length === 0) {
      return res
        .status(400)

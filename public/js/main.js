@@ -5,7 +5,7 @@ script.onload = function() {
   $(document).ready(function () {
 
     function isLoggedIn(){
-      const alreadyLoggedIn = localStorage.getItem("userInfo");
+      const alreadyLoggedIn = JSON.parse(localStorage.getItem("userInfo"));
       if(alreadyLoggedIn){
         const sidebar = $('#sidebar');
         const newsFeed = $('<a>')
@@ -79,7 +79,6 @@ script.onload = function() {
     $('#searchForm').submit(function (event) {
         event.preventDefault();
         const searchTerm = $('#search_term').val().trim();
-        console.log(event)
         if (searchTerm === '') {
           $('#search-error').text('Please enter a search term').show();
           return; 
@@ -95,14 +94,16 @@ script.onload = function() {
         }).then(function (data) {
           const showList = $('#show');
           showList.empty();
-    
-          data.forEach(function (result) {
-            const show = result;
-            const listItem = display(show);
-            showList.append(listItem);
-          });
-    
-          showList.show();
+          if(data && data.length > 0){
+            data.forEach(function (result) {
+              const show = result;
+              const listItem = display(show);
+              showList.append(listItem);
+            });
+            showList.show();
+          }else{
+            console.log('no data found')
+          }
          
         });
       });
@@ -133,12 +134,16 @@ script.onload = function() {
         <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-3.5-2a.5.5 0 0 0-.5.5v1h-1a.5.5 0 0 0 0 1h1v1a.5.5 0 0 0 1 0v-1h1a.5.5 0 0 0 0-1h-1v-1a.5.5 0 0 0-.5-.5Z"/>
       </svg>`)
       
-
+     
         const likes = $('<button>')
         .text(showData.likes + ' Likes')
         .addClass('btn btnCss')
+        
+        const user = JSON.parse(localStorage.getItem('userInfo'))
+        let Edit,Delete;
+       if(showData.userName == user.username){
 
-        const Edit = $('<button>')
+        Edit = $('<button>')
         .text('Edit')
         .attr('id','myBtn')
         .attr('type','submit')
@@ -204,7 +209,7 @@ script.onload = function() {
           
         })
 
-        const Delete = $(`<button>`)
+        Delete = $(`<button>`)
         .text('Delete')
         .attr('id','delete')
         .addClass('btn btnCss')
@@ -225,10 +230,10 @@ script.onload = function() {
               })
               
           });
+       }
     
-
         $('#show')
-          .append(user_name,img,title,body,dl,likes,Edit,Delete,Comment)
+          .append(user_name,img,title,body,dl,likes,Edit? Edit:null,Delete ? Delete:null,Comment)
           .show();
     
         
@@ -270,9 +275,10 @@ script.onload = function() {
           $('#error-message').hide();
           $('#errorBody').hide();
         const url = `http://localhost:3000/addNewPost`;
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'))
         let data = {
-            userId: '64d2f47e11d02df99ad95595',
-            userName: 'anne34',
+            userId: userInfo.userid,
+            userName: userInfo.username,
             body:body,
             title:title
           
@@ -306,9 +312,10 @@ script.onload = function() {
         }
     
         const searchUrl = `http://localhost:3000/addfriends`;
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'))
         let body ={
-          userName:userName,
-          userId:'64d2f36a11d02df99ad95594'
+          userName:userInfo.username,
+          userId:userInfo.userid
         }
         $('#loading').show() 
         $.ajax({
@@ -370,6 +377,7 @@ script.onload = function() {
           userName:username,
           password:password
         }
+        $('#loading').show();
         $.ajax({
           url: searchUrl,
           method: 'POST',
@@ -377,18 +385,17 @@ script.onload = function() {
           data:JSON.stringify(data)
         }).then(function (data) {
           $('#login-error').hide();
+          $('#loading').hide();
           const message = $('<h1>').text('Registration Successful')
           .addClass('')
+          location.reload();
+          location.href ='/'
 
-          const goBack = $('<a>')
-          .text('Back To Login')
-          .attr('href', '/')
-          .addClass('')
-
-          $('#registration').append(message,goBack).show()
+          $('#registration').append(message).show()
          
         })
         .catch(e =>{
+          $('#loading').hide();
           $('#error').text(e.responseJSON.error).show();
         })
       })
@@ -425,9 +432,11 @@ const login = ()=>{
     contentType: 'application/json', 
     data:JSON.stringify(data)
   }).then(function (data) {
+ 
     $('#login-error').hide();
-    $('#loading').hide() 
-    localStorage.setItem("userInfo", username);
+    $('#loading').hide();
+    const userInfo = {username : data.userName,userid : data._id}
+    localStorage.setItem("userInfo", JSON.stringify(userInfo));
     location.href ='http://localhost:3000/newsFeed'
    
   })

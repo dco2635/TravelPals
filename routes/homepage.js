@@ -100,8 +100,8 @@ router.route('/profile').get(async (req, res) => {
   let userData = req.body;
   try {
     const newUser = await friendData.createFriendUserName(userData.userName, userData.userId); //requires req.session.user
-    res.status(200)
-    //res.json(newUser);
+    
+    res.json(newUser);
   } catch (e) {
     res.status(500).json({error: e});
   }

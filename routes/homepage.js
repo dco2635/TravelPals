@@ -56,12 +56,11 @@ router.route('/addpost/id').get(async (req, res) => {
 
 router.route('/edit').put(async (req, res) => {
   let userData= req.body;
-  console.log(userData);
    try {
  
     const newPost= await postData.updatePost(userData.postId,userData.userId, userData.userName, userData.title, userData.body);
     res.json(newPost);
-    console.log(newPost);
+    
    }
    catch(e) {
     res.status(500).json({error: e});
@@ -75,7 +74,7 @@ router.route('/delete/:id').delete(async (req, res) => {
   res.send(result)
   
 });
-router.route('/addpost/id').post(async (req, res) => {
+router.route('/comment').post(async (req, res) => {
 
 
   let userData= req.body;

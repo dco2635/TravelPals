@@ -23,7 +23,7 @@ let exportedMethods = {
 
     const addedFriend = await userCollection.updateOne(
       //talk to David about this
-      { _id: new ObjectId(userId) },
+      { _id: ObjectId(userId) },
       { $push: { friends: newFriend } }
     );
 
@@ -31,7 +31,7 @@ let exportedMethods = {
 
     const myFriend = await userCollection.find({ newFriend }).toArray();
 
-    return myFriend;
+    return storedFriend;
   },
   async createFriendUserName(userName, userId) {
     //how to get the userID!?

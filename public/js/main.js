@@ -65,15 +65,7 @@ script.onload = function() {
       $('#logout').hide();
       $('#addpost').hide();
       $('#profile').hide();
-      const msg = $('<h1>')
-      .text('Unauthorized Access')
-      .addClass('card-text')
-
-      const link = $('<a>')
-        .attr('href', '/')
-        .text('Back To Login')
-        .addClass('card-text')
-      $('#unAuthorized').append(msg,link).show();
+      
     }
   
     $('#searchForm').submit(function (event) {

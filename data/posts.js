@@ -31,11 +31,17 @@ let exportedMethods = {
       likedBy:[]
     };
     const storedPost = await postsCollection.insertOne(newPost);
-   const addedPost = await userCollection.updateOne(
+
+
+
+   const addedPost = await userCollection.findOneAndUpdate(
      { _id: new ObjectId(userId) },
-     { $push: { posts: newPost } }
+     { $push: { posts: newPost } },
+     {returnDocument: 'after'}
    );
-   const myPost = await userCollection.find({ newPost }).toArray();
+  //  const myPost = await userCollection.find({ newPost }).toArray();
+
+    console.log(addedPost.value);
 
     return storedPost;
   },
@@ -112,18 +118,21 @@ let exportedMethods = {
     if (!user) throw "Error: User not found";
     return user;
   },
-  async likePost(postId) {
+  async likePost(postId, userName) {
     const userCollection = await users();
     const postsCollection = await posts();
+
+    // if person already exist in the array then it would 
 
     const chosenPost = this.getPostById(postId);
     const updatedlikes = chosenPost.likes + 1;
 
-
+   
     const foundPost = await postsCollection.updateOne(
       { _id: new Object(postId) },
       { $set: { likes: updatedlikes} }
     );
+    const userLikes = await postsCollection.updateOne({_id: new Object(postId)},{$push: {likedBy: userName }});
 
     const updateUserPost = await userCollection.findOneAndUpdate(
       { "posts._id": new ObjectId(foundPost._id) },
@@ -132,7 +141,7 @@ let exportedMethods = {
 
     // const updatedPost = await postCollection.updateOne()
   },
-  async unlikePost(postId) {
+  async unlikePost(postId, userName) {
     const userCollection = await users();
     const postsCollection = await posts();
 
@@ -144,6 +153,7 @@ let exportedMethods = {
       { _id: new Object(postId) },
       { $set: { likes: updatedlikes} }
     );
+    const userRemoved = await postsCollection.updateOne({_id: new Object(postId)},{$pull: {likedBy: userName }});
 
     const updateUserPost = await userCollection.findOneAndUpdate(
       { "posts._id": new ObjectId(foundPost._id) },

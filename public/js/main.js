@@ -132,8 +132,8 @@ script.onload = function() {
         .addClass('card-text')
 
         const Comment = $(`<br> <input class="textField">
-        `).attr('id','addcomment')
-        .attr('name','addcomment')
+        `).attr('id','comment')
+        .attr('name','comment')
 
 
 
@@ -142,26 +142,6 @@ script.onload = function() {
         .addClass('btn btnCss')
         .click(function(event){
           
-          const url ='http://localhost:3000/comment';
-          const userInfo = JSON.parse(localStorage.getItem('userInfo'))
-      
-          const data ={
-            userName:userInfo.username,
-            userId:userInfo.userid, 
-            postId:showData._id,
-           // text:
-          }
-          $.ajax({
-            url: url,
-            method: 'POST',
-            contentType: 'application/json', 
-            data: JSON.stringify(data)
-          }).then(function (data) {
-            location.reload();
-          })
-          .catch(e=>{
-          
-          })
         })
      
         const likes = $('<button>')
@@ -218,12 +198,14 @@ script.onload = function() {
                 contentType: 'application/json', 
                 data: JSON.stringify(data)
               }).then(function (showData) {
+               console.log('loading')
                 $('#loading').hide() 
                 location.href ='http://localhost:3000/newsFeed'
                 
               })
               .catch(e=>{
-                location.href ='http://localhost:3000/newsFeed'
+                
+               // location.href ='http://localhost:3000/newsFeed'
                 $('#loading').hide() 
               })
           })

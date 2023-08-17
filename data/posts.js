@@ -31,12 +31,11 @@ let exportedMethods = {
       likedBy:[]
     };
     const storedPost = await postsCollection.insertOne(newPost);
-   // const addedPost = await userCollection.updateOne(
-      //talk to David about this
-   //   { _id: new ObjectId(userId) },
-   //   { $push: { posts: newPost } }
-   // );
-   // const myPost = await userCollection.find({ newPost }).toArray();
+   const addedPost = await userCollection.updateOne(
+     { _id: new ObjectId(userId) },
+     { $push: { posts: newPost } }
+   );
+   const myPost = await userCollection.find({ newPost }).toArray();
 
     return storedPost;
   },
@@ -88,20 +87,20 @@ let exportedMethods = {
     let newPostId= new ObjectId(postId)
     //console.log(postId);
    
-    const foundPost = await postsCollection.updateOne(
+    const foundPost = await postsCollection.findOneAndUpdate(
       { _id: newPostId },
-      { $set: { userId: userId, userName: userName, title: title, body: body } }
+      { $set: { userId: userId, userName: userName, title: title, body: body }}
+      ,{returnDocument: 'after'}
     );
-    console.log(foundPost);
+    console.log(foundPost.value);
 
     const updateUserPost = await userCollection.findOneAndUpdate(
-      { "posts._id": new ObjectId(foundPost._id) },
-      { $set: { posts: { _id: foundPost._id } } }
+      { "posts._id": new ObjectId(foundPost.value._id) },
+      { $set: { posts: { _id: foundPost.value._id } }} ,
+      {returnDocument: 'after'}
     );
-
-    console.log(updateUserPost);
-
-    // const updatedPost = await postCollection.updateOne()
+    console.log(updateUserPost.value)
+    return updateUserPost.value;
   },
   async getUserByUserName(userName){
     userName = validate.checkString(userName);

@@ -107,9 +107,7 @@ script.onload = function() {
          
         });
       });
-      $('#comment').submit(function (event) {
-        debugger
-      })
+
 
       function display(showData) {
        
@@ -131,17 +129,17 @@ script.onload = function() {
         .text(showData.body)
         .addClass('card-text')
 
+        
         const Comment = $(`<br> <input class="textField">
         `).attr('id','comment')
         .attr('name','comment')
-
-
 
         const btn = $(`<button>`)
         .text('Add')
         .addClass('btn btnCss')
         .click(function(event){
-          
+        let input =   $('comment').val()
+        debugger
         })
      
         const likes = $('<button>')

@@ -34,14 +34,13 @@ let exportedMethods = {
 
 
 
-   const addedPost = await userCollection.findOneAndUpdate(
+   const addedPost = await userCollection.updateOne(
      { _id: new ObjectId(userId) },
-     { $push: { posts: newPost } },
-     {returnDocument: 'after'}
+     { $push: { posts: newPost._id } }
    );
 
 
-    return storedPost;
+    return addedPost;
   },
   async getPostById(postId) {
     const postsCollection = await posts();
@@ -120,7 +119,7 @@ let exportedMethods = {
     const postsCollection = await posts();
     const findPost = await postsCollection.findOne({_id:new ObjectId(postId)})
     let updateUserPost,updateLikedBy;
-    if(findPost.likedBy.length > 0){
+    if(findPost && findPost.likedBy && findPost.likedBy.length > 0){
      let result = findPost.likedBy.filter(p=>p===userName).length
      if(result > 0){
       let currentLikes = findPost.likes;
@@ -133,6 +132,20 @@ let exportedMethods = {
       updateLikedBy = await postsCollection.findOneAndUpdate(
         { _id: new ObjectId(postId) },
         { $pull: { likedBy: userName } },
+        {returnDocument: 'after'}
+      );
+     }else{
+      let currentLikes = findPost.likes;
+      let updateLikes = currentLikes +1;
+      updateUserPost = await postsCollection.findOneAndUpdate(
+        { _id: new ObjectId(postId) },
+        { $set: { likes: updateLikes }},
+        {returnDocument: 'after'}
+      );
+
+      updateLikedBy = await postsCollection.findOneAndUpdate(
+        { _id: new ObjectId(postId) },
+        { $push: { likedBy: userName } },
         {returnDocument: 'after'}
       );
      }

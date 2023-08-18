@@ -94,6 +94,17 @@ router.route('/profile').get(async (req, res) => {
    res.render('profile',{pageTitle:'Profile'});
  });
 
+ router.route('/userInfo').post(async (req, res) => {
+  let userid = req.body.userId;
+  try {
+    const user = await userDataFunctions.getUserById(userid); //requires req.session.user
+    
+    res.send(user)
+  } catch (e) {
+    res.status(500).json({error: e});
+  }
+});
+
  router.route('/addfriends').post(async (req, res) => {
   
 

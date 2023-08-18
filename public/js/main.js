@@ -38,6 +38,46 @@ script.onload = function() {
         const name = $('<span>')
         .text(alreadyLoggedIn.username)
         userName.append(name)
+        if(location.pathname =='/profile'){
+          let url = 'http://localhost:3000/userInfo'
+          const user = JSON.parse(localStorage.getItem('userInfo'))
+          let data ={
+            userId:user.userid
+          }
+          $.ajax({
+            url: url,
+            method: 'POST',
+            contentType: 'application/json', 
+            data: JSON.stringify(data)
+          }).then(function (showData) {
+            const profile = $('#profile');
+
+            const firstName = $('<h1>')
+            .text('First Name: ' + showData.firstName)
+
+            const lastName = $('<h1>')
+            .text('Last Name: '  + showData.lastName)
+
+            const userName = $('<h1>')
+            .text('User Name: ' + showData.userName)
+
+            const email = $('<h1>')
+            .text('Email: ' +  showData.email)
+
+            const phone = $('<h1>')
+            .text('Phone Number: ' +  showData.phoneNumber)
+
+
+            profile.append(firstName,lastName,userName,email,phone).show();
+            
+          })
+          .catch(e=>{
+            
+          })
+        }
+        if(location.pathname =='/'){
+          location.href ='http://localhost:3000/newsFeed'
+        }
         return true;
       }
       return false;

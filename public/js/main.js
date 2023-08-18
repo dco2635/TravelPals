@@ -113,8 +113,8 @@ script.onload = function() {
         const dl = $('<dl>');
         const commentList = $('<div>');
         showData.comments.forEach(function (comment) {
-            commentList.append($('<span>').text(comment.userName ? comment.userName: '' + ' : ' + comment.text));
-        });
+          commentList.append($('<p>').text(comment.userName + ': ' +comment.text));
+                });
         dl.append($('<dt>').text('Comments: '), $('<dd>').append(commentList));
 
         const body = $('<p>')
@@ -122,16 +122,36 @@ script.onload = function() {
         .addClass('card-text')
 
         
-        const Comment = $(`<br> <input class="textField">
-        `).attr('id','comment')
-        .attr('name','comment')
+        const Comment = $('<input>')
+        .addClass('textField')
+        .attr('id','comment')
 
         const btn = $(`<button>`)
         .text('Add')
         .addClass('btn btnCss')
         .click(function(event){
-        let input =   $('comment').val()
-        debugger
+          const text = $('#comment').val().trim();
+          let url = 'http://localhost:3000/comment'
+          const user = JSON.parse(localStorage.getItem('userInfo'))
+          let data ={
+            userId:user.userid,
+            userName:user.username,
+            postId:showData._id,
+            text:text
+          }
+          $.ajax({
+            url: url,
+            method: 'POST',
+            contentType: 'application/json', 
+            data: JSON.stringify(data)
+          }).then(function (showData) {
+          
+            location.reload()
+            
+          })
+          .catch(e=>{
+            
+          })
         })
      
         const likes = $('<button>')

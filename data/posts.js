@@ -32,12 +32,15 @@ let exportedMethods = {
     };
     const storedPost = await postsCollection.insertOne(newPost);
 
+    const addedPost = await userCollection.findOneAndUpdate(
+      { _id: new ObjectId(userId) },
+      { $push: { posts: newPost } },
+      {returnDocument: 'after'}
+    );
 
 
-   const addedPost = await userCollection.updateOne(
-     { _id: new ObjectId(userId) },
-     { $push: { posts: newPost._id } }
-   );
+  
+    console.log(addedPost.value);
 
 
     return addedPost;

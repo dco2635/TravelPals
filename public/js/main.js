@@ -33,6 +33,11 @@ script.onload = function() {
           location.href = 'http://localhost:3000/'
         })
         sidebar.append(newsFeed,addpost,profile,logout);
+
+        const userName = $('#userName');
+        const name = $('<span>')
+        .text(alreadyLoggedIn.username)
+        userName.append(name)
         return true;
       }
       return false;
@@ -130,7 +135,7 @@ script.onload = function() {
         .text('Add')
         .addClass('btn btnCss')
         .click(function(event){
-          const text = $('#comment').val().trim();
+        const text = $('#comment').val().trim();
           let url = 'http://localhost:3000/comment'
           const user = JSON.parse(localStorage.getItem('userInfo'))
           let data ={

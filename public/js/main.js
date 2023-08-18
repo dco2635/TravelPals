@@ -165,7 +165,7 @@ script.onload = function() {
         
         .click(function (event){
           event.preventDefault()
-          let likes = $('#likes').val();
+      
           let url = 'http://localhost:3000/likes'
           const user = JSON.parse(localStorage.getItem('userInfo'))
           let data ={
@@ -178,12 +178,11 @@ script.onload = function() {
             contentType: 'application/json', 
             data: JSON.stringify(data)
           }).then(function (showData) {
-          
-            location.reload()
+            location.href ='http://localhost:3000/newsFeed'
             
           })
           .catch(e=>{
-            
+           
           })
         })
 

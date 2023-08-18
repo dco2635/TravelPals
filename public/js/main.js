@@ -158,6 +158,31 @@ script.onload = function() {
         .text(showData.likes + ' Likes')
         .addClass('btn btnCss')
         
+        .click(function (event){
+          event.preventDefault()
+          let likes = $('#likes').val();
+          let url = 'http://localhost:3000/likes'
+          const user = JSON.parse(localStorage.getItem('userInfo'))
+          let data ={
+            userName:user.username,
+            postId:showData._id
+          }
+          $.ajax({
+            url: url,
+            method: 'POST',
+            contentType: 'application/json', 
+            data: JSON.stringify(data)
+          }).then(function (showData) {
+          
+            location.reload()
+            
+          })
+          .catch(e=>{
+            
+          })
+        })
+
+        
         const user = JSON.parse(localStorage.getItem('userInfo'))
         let Edit,Delete;
        if(showData.userName == user.username){

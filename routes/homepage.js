@@ -142,6 +142,14 @@ router.route('/login').post(async (req, res) => {
 });
 
 router.route('/likes').post(async (req, res) => {
+   let username = req.body.userName;
+  let postId = req.body.postId;
+  try{
+    const result = await postData.likePost(postId,username)
+    res.json(result);
+  }catch(e){
+
+  }
   
 });
 

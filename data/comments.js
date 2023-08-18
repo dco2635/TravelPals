@@ -20,9 +20,11 @@ let exportedMethods = {
 
       
       
-      const addedComment = await postsCollection.updateOne( 
+      commentList.append($('<p>').text(comment.userName + ': ' +comment.text));
+const addedComment = await postsCollection.updateOne( 
         { _id: new ObjectId(postId) },
-        { $push: { comments: newComment } });
+        { $push: { comments: newComment } }
+      );
 
         //How will we update the user collection? 
 
@@ -30,10 +32,11 @@ let exportedMethods = {
 
         const updateUserPost = await userCollection.findOneAndUpdate(
           { "posts._id": new ObjectId(postId) },
-          { $set: { posts: { _id: postId} } }
+          { $set: { posts: { _id: postId} } },
+          {returnDocument: 'after'}
         );
         //if this fails put "postId"
-
+        
         const storedComment = commentCollection.insertOne(newComment); 
 
   

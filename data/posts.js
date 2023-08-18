@@ -31,19 +31,7 @@ let exportedMethods = {
       likedBy:[]
     };
     const storedPost = await postsCollection.insertOne(newPost);
-
-    const addedPost = await userCollection.findOneAndUpdate(
-      { _id: new ObjectId(userId) },
-      { $push: { posts: newPost } },
-      {returnDocument: 'after'}
-    );
-
-
-  
-    console.log(addedPost.value);
-
-
-    return addedPost;
+    return storedPost;
   },
   async getPostById(postId) {
     const postsCollection = await posts();

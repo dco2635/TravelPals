@@ -167,36 +167,100 @@ script.onload = function() {
         .addClass('card-text')
 
         
-        const Comment = $('<input>')
-        .addClass('textField')
-        .attr('id','comment')
+        // const Comment = $('<input>')
+        // .addClass('textField')
+        // .attr('id','comment')
 
-        const btn = $(`<button>`)
-        .text('Add')
-        .addClass('btn btnCss')
-        .click(function(event){
-        const text = $('#comment').val().trim();
-          let url = 'http://localhost:3000/comment'
-          const user = JSON.parse(localStorage.getItem('userInfo'))
-          let data ={
-            userId:user.userid,
-            userName:user.username,
-            postId:showData._id,
-            text:text
-          }
-          $.ajax({
-            url: url,
-            method: 'POST',
-            contentType: 'application/json', 
-            data: JSON.stringify(data)
-          }).then(function (showData) {
+        // const btn = $(`<button>`)
+        // .text('Add')
+        // .addClass('btn btnCss')
+        // .click(function(event){
+        // const text = $('#comment').val().trim();
+        //   let url = 'http://localhost:3000/comment'
+        //   const user = JSON.parse(localStorage.getItem('userInfo'))
+        //   let data ={
+        //     userId:user.userid,
+        //     userName:user.username,
+        //     postId:showData._id,
+        //     text:text
+        //   }
+        //   $.ajax({
+        //     url: url,
+        //     method: 'POST',
+        //     contentType: 'application/json', 
+        //     data: JSON.stringify(data)
+        //   }).then(function (showData) {
           
-            location.reload()
+        //     location.reload()
             
-          })
-          .catch(e=>{
+        //   })
+        //   .catch(e=>{
             
+        //   })
+        // })
+        const  Comment = $('<button>')
+        .text('Write Comment')
+        .attr('id','myBtn')
+        .attr('type','submit')
+        .addClass('btn btnCss')
+        .click(function (event) {
+          event.preventDefault()
+          $('#show')
+          .hide();
+
+          $('#searchForm')
+          .hide();
+
+          const heading = $('<h1>').text('Add Comment')
+          .addClass('')
+          $('#comment').append(heading).show()
+          const text = $('<input>')
+          .addClass('textField')
+          .attr('id','addText')
+          $('#comment').append(text).show()
+       
+
+          const btn = $('<button>').text('Continue')
+          .addClass('btn btnCss')
+          .click(function(event){
+            event.preventDefault();
+            const url = `http://localhost:3000/comment`;
+            const text = document.getElementById('addText').value;
+            
+            let data ={
+              userId:showData.userId,
+              userName:showData.userName,
+              postId:showData._id,
+              text:text,
+            
+            }
+            $('#loading').show() 
+            $.ajax({
+                url: url,
+                method: 'POST',
+                contentType: 'application/json', 
+                data: JSON.stringify(data)
+              }).then(function (showData) {
+               console.log('loading')
+                $('#loading').hide() 
+                location.href ='http://localhost:3000/newsFeed'
+                
+              })
+              .catch(e=>{
+              
+                $('#loading').hide() 
+              })
           })
+          $('#comment').append(btn).show()
+
+          const cancel = $('<button>').text('Cancel')
+          .addClass('btn btnCss')
+          .click(function (event) {
+            event.preventDefault();
+           location.href ='http://localhost:3000/newsFeed'
+          })
+          $('#comment').append(cancel).show()
+          
         })
      
         const likes = $('<button>')
@@ -324,7 +388,7 @@ script.onload = function() {
        }
     
         $('#show')
-          .append(user_name,img,title,body,dl,likes,Edit? Edit:null,Delete ? Delete:null,Comment,btn)
+          .append(user_name,img,title,body,dl,likes,Edit? Edit:null,Delete ? Delete:null,Comment)
           .show();
     
         

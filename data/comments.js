@@ -20,7 +20,7 @@ let exportedMethods = {
 
       
       
-      commentList.append($('<p>').text(comment.userName + ': ' +comment.text));
+     
 const addedComment = await postsCollection.updateOne( 
         { _id: new ObjectId(postId) },
         { $push: { comments: newComment } }

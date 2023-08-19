@@ -39,6 +39,7 @@ let exportedMethods = {
     userId = validate.checkId(userId);
 
     const yourFriend = await userData.getUserByUserName(userName);
+    const person = await userData.getUserById(userId);
     const userCollection = await users();
 
     console.log(yourFriend);
@@ -48,6 +49,9 @@ let exportedMethods = {
     const newFriend = {
       _id: new ObjectId(),
       friendId: yourFriend._id,
+      friendUsername: yourFriend.userName,
+      friendFirstname: yourFriend.firstName,
+      friendLastname: yourFriend.lastName,
       userId: userId,
     };
 
@@ -56,8 +60,14 @@ let exportedMethods = {
 
     let addedFriend = await userCollection.updateOne(
       { _id: new ObjectId(userId) },
-      { $push: { friends: newFriend } }
+      { $push: { friends: newFriend.friendFirstname + " " + newFriend.friendLastname} }
     );
+
+    let addedFriend2 = await userCollection.updateOne(
+      { _id: new ObjectId(yourFriend._id) },
+      { $push: { friends: person.firstName + " " + person.lastName} }
+    );
+
 
     const storedFriend = await friendsCollection.insertOne(newFriend);
 

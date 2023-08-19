@@ -7,6 +7,7 @@ import {friendData,postData, commentData} from "../data/index.js";
 import validate from "../validate.js";
 import { ObjectId } from 'mongodb';
 import { posts } from '../config/mongoCollections.js';
+import e from 'express';
 
 
 router.route('/').get(async (req, res) => {
@@ -39,6 +40,16 @@ router.route('/addpost').get(async (req, res) => {
 router.route('/addNewPost').post(async (req, res) => {
   
    let userData= req.body;
+
+   try{
+     userData.userId = validate.checkId(userData.userId);
+     userData.userName = validate.checkString(userData.userName);
+     userData.title = validate.checkString(userData.title);
+     userData.body = validate.checkString(userData.body);
+   }catch(e){
+    res.status(400).json({error:e})
+   }
+
    try {
  
     const newPost= await postData.createPost(userData.userId, userData.userName, userData.title, userData.body);
@@ -50,12 +61,22 @@ router.route('/addNewPost').post(async (req, res) => {
    }
 });
 
-router.route('/addpost/id').get(async (req, res) => {
-  res.json("Succesful");
-});
+// router.route('/addpost/id').get(async (req, res) => {
+//   res.json("Succesful");
+// });
 
 router.route('/edit').put(async (req, res) => {
   let userData= req.body;
+  try{
+  userData.postId = validate.checkId(userData.postId);
+  userData.userId = validate.checkId(userData.userId);
+  userData.userName = validate.checkString(userData.userName);
+  userData.title = validate.checkString(userData.title);
+  userData.body = validate.checkString(userData.body);
+}catch(e){
+ res.status(400).json({error:e})
+}
+
    try {
  
     const newPost= await postData.updatePost(userData.postId,userData.userId, userData.userName, userData.title, userData.body);
@@ -75,9 +96,17 @@ router.route('/delete/:id').delete(async (req, res) => {
   
 });
 router.route('/comment').post(async (req, res) => {
-
-
   let userData= req.body;
+
+  try{
+    userData.userId = validate.checkId(userData.userId);
+    userData.postId = validate.checkId(userData.postId);
+    userData.userName = validate.checkString(userData.userName);
+    userData.text = validate.checkString(userData.text);
+  }catch(e){
+   res.status(400).json({error:e})
+  }
+ 
   try {
    const newComment= await commentData.createComment(userData.userName,userData.userId, userData.postId, userData.text);
    res.json(newComment);

@@ -134,10 +134,9 @@ let exportedMethods = {
 
   // Authentication of the User! 
   async checkUser(userName, password){
+    
     userName = validate.checkString(userName);
     userName= userName.toLowerCase();
-   
-   // password= password.checkString();
     
     const userCollection = await users();
 

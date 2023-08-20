@@ -31,6 +31,13 @@ let exportedMethods = {
       likedBy:[]
     };
     const storedPost = await postsCollection.insertOne(newPost);
+    console.log(newPost._id);
+
+    const addedPost = await userCollection.updateOne(
+      { _id: new ObjectId(userId) },
+    { $push: { posts: newPost._id} },
+    );
+    
     return storedPost;
   },
   async getPostById(postId) {
@@ -47,28 +54,15 @@ let exportedMethods = {
     const postsCollection = await posts();
     const userCollection = await users();
 
-    const foundPost = await postsCollection.findOne({
-      "posts._id": new ObjectId(postId),
-    });
-
-    if (!foundPost) {
-      // If product does not exist
-      throw "Review does not exist!";
-    } else {
-      let foundPostId = foundPost._id;
-
+    
       const removePost = await postsCollection.deleteOne({
-        _id: new ObjectId(foundPostId),
+        _id: new ObjectId(postId),
       });
 
-      console.log("This post was removed from post collections:", removePost);
-
-      const removedPostAtUser = await userCollection.findOneAndUpdate(
-        { "posts._id": new ObjectId(foundPostId) },
-        { $pull: { posts: { _id: foundPostId } } }
-      );
-      console.log("this post was removed", removedPostAtUser);
-    }
+ 
+      
+      return removePost; 
+    
   },
   async updatePost(postId, userId, userName, title, body) {
     const userCollection = await users();
@@ -88,6 +82,7 @@ let exportedMethods = {
       ,{returnDocument: 'after'}
     );
  
+    console.log(foundPost.value._id);
     const updateUserPost = await userCollection.findOneAndUpdate(
       { "posts._id": new ObjectId(foundPost.value._id) },
       { $set: { posts: { _id: foundPost.value._id } }} ,

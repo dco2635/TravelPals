@@ -88,9 +88,13 @@ router.route('/edit').put(async (req, res) => {
 });
 router.route('/delete/:id').delete(async (req, res) => {
   const id = req.params.id;
-  const post = await posts();
-  const result = await post.deleteOne({_id:new ObjectId(id)})
-  res.send(result)
+  try {
+    const result= await postData.deletePost(id);
+    res.send(result)
+  }
+ catch(e) {
+  res.status(500).json({error: e});
+ }
   
 });
 router.route('/comment').post(async (req, res) => {

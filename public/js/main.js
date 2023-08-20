@@ -16,6 +16,7 @@ script.onload = function() {
         data: JSON.stringify(data)
       }).then(function (showData) {
         const fr = $('#list');
+        $('#list').empty();
         showData.friends.forEach(p=>{
           const friend = $('<li>')
           .text(p)
@@ -81,23 +82,24 @@ script.onload = function() {
           }).then(function (showData) {
             const profile = $('#profile');
 
-            const firstName = $('<h1>')
-            .text('First Name: ' + showData.firstName)
+            const firstName = $('<p>')
+            .addClass('card-text')
+            .text('Full Name: ' + showData.firstName + ' '+showData.lastName)
 
-            const lastName = $('<h1>')
-            .text('Last Name: '  + showData.lastName)
-
-            const userName = $('<h1>')
+            const userName = $('<p>')
+            .addClass('card-text')
             .text('User Name: ' + showData.userName)
 
-            const email = $('<h1>')
+            const email = $('<p>')
+            .addClass('card-text')
             .text('Email: ' +  showData.email)
 
-            const phone = $('<h1>')
+            const phone = $('<p>')
+            .addClass('card-text')
             .text('Phone Number: ' +  showData.phoneNumber)
 
 
-            profile.append(firstName,lastName,userName,email,phone).show();
+            profile.append(firstName,userName,email,phone).show();
             
           })
           .catch(e=>{
@@ -107,10 +109,25 @@ script.onload = function() {
         if(location.pathname =='/'){
           location.href ='http://localhost:3000/newsFeed'
         }
+        if(location.pathname =='/register'){
+          location.href ='http://localhost:3000/newsFeed'
+        }
+        if(location.pathname =='/logout'){
+          location.href ='http://localhost:3000/newsFeed'
+        }
         if(location.pathname =='/addFriend'){
           loadFriend()
         }
         return true;
+      }
+      if((location.pathname =='/newsFeed' 
+      || location.pathname =='/profile'
+      ||location.pathname =='/addFriend'
+      ||location.pathname =='/addpost'
+       || location.pathname =='/logout'))
+      {
+        location.href ='http://localhost:3000/'
+       
       }
       return false;
     }
@@ -156,7 +173,7 @@ script.onload = function() {
         }
     
         const searchUrl = `http://localhost:3000/search/${encodeURIComponent(searchTerm)}`;
-        
+        $('#noDatafound').empty();
         $.ajax({
           url: searchUrl,
           method: 'GET',
@@ -170,8 +187,12 @@ script.onload = function() {
               showList.append(listItem);
             });
             showList.show();
+            
           }else{
-            console.log('no data found')
+            const noDatafound = $('#noDatafound');
+            const data = $('<span>').text('No result found')
+        .addClass('')
+        noDatafound.append(data).show();
           }
          
         });
@@ -407,8 +428,6 @@ script.onload = function() {
         event.preventDefault();
         const title = $('#title').val().trim();
         const body = $('#body').val().trim();
-        const titleInput = /^[A-Za-z0-9#?.!]+$/.test(title)
-        const bodyInput = /^[A-Za-z0-9#?.!]+$/.test(body)
         if (title === '') {
           $('#error-message')
           .text('Invalid: Must enter title text')
@@ -424,17 +443,7 @@ script.onload = function() {
             $('#error-message').hide()
             return; 
         }
-        // else if(!titleInput){
-        //     $('#error-message')
-        //   .text('Invalid: Special characters not allowed')
-        //   .addClass('error')
-        //   .show();
-        // }else if(!bodyInput){
-        //     $('#errorBody')
-        //   .text('Invalid: Special characters not allowed')
-        //   .addClass('error')
-        //   .show();
-        // }
+      
         else {
           $('#error-message').hide();
           $('#errorBody').hide();

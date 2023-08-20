@@ -562,7 +562,7 @@ script.onload = function() {
         }else if(!numberValidate(phoneNumber) || phoneNumber.length !=10){
           $('#phoneNumber-error')
           .addClass('error')
-          .text('Phone number must be 10 digits').show();
+          .text('Phone number must be 10 digits. Only numbers are allowed!').show();
           return; 
         }else if(!userNameValidate(username)){
           $('#username-error')

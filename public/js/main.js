@@ -3,7 +3,31 @@ var script = document.createElement('script');
 script.src = 'https://code.jquery.com/jquery-3.6.0.min.js';
 script.onload = function() {
   $(document).ready(function () {
-
+    function loadFriend(){
+      let url = 'http://localhost:3000/userInfo'
+      const user = JSON.parse(localStorage.getItem('userInfo'))
+      let data ={
+        userId:user.userid
+      }
+      $.ajax({
+        url: url,
+        method: 'POST',
+        contentType: 'application/json', 
+        data: JSON.stringify(data)
+      }).then(function (showData) {
+        const fr = $('#list');
+        showData.friends.forEach(p=>{
+          const friend = $('<li>')
+          .text(p)
+          .addClass('')
+          fr.append(friend).show();
+        })
+        
+      })
+      .catch(e=>{
+        
+      })
+    }
     function isLoggedIn(){
       const alreadyLoggedIn = JSON.parse(localStorage.getItem("userInfo"));
       if(alreadyLoggedIn){
@@ -23,6 +47,11 @@ script.onload = function() {
         .text('My Profile')
         .addClass('list-group-item list-group-item-action')
 
+        const addFriend = $('<a>')
+        .attr('href', '/addFriend')
+        .text('Add Friends')
+        .addClass('list-group-item list-group-item-action')
+
         const logout = $('<a>')
         .attr('href', '/logout')
         .text('Logout')
@@ -32,7 +61,7 @@ script.onload = function() {
           localStorage.removeItem("userInfo");
           location.href = 'http://localhost:3000/'
         })
-        sidebar.append(newsFeed,addpost,profile,logout);
+        sidebar.append(newsFeed,addpost,profile,addFriend,logout);
 
         const userName = $('#userName');
         const name = $('<span>')
@@ -78,6 +107,9 @@ script.onload = function() {
         if(location.pathname =='/'){
           location.href ='http://localhost:3000/newsFeed'
         }
+        if(location.pathname =='/addFriend'){
+          loadFriend()
+        }
         return true;
       }
       return false;
@@ -116,8 +148,8 @@ script.onload = function() {
     $('#searchForm').submit(function (event) {
         event.preventDefault();
         const searchTerm = $('#search_term').val().trim();
-        if (searchTerm === '') {
-          $('#search-error').text('Please enter a search term').show();
+        if (searchTerm === '' || !userNameValidate(searchTerm)) {
+          $('#search-error').text('Please enter a valid search term').show();
           return; 
         } else {
           $('#search-error').hide();
@@ -144,7 +176,7 @@ script.onload = function() {
          
         });
       });
-
+   
 
       function display(showData) {
        
@@ -166,38 +198,7 @@ script.onload = function() {
         .text(showData.body)
         .addClass('card-text')
 
-        
-        // const Comment = $('<input>')
-        // .addClass('textField')
-        // .attr('id','comment')
-
-        // const btn = $(`<button>`)
-        // .text('Add')
-        // .addClass('btn btnCss')
-        // .click(function(event){
-        // const text = $('#comment').val().trim();
-        //   let url = 'http://localhost:3000/comment'
-        //   const user = JSON.parse(localStorage.getItem('userInfo'))
-        //   let data ={
-        //     userId:user.userid,
-        //     userName:user.username,
-        //     postId:showData._id,
-        //     text:text
-        //   }
-        //   $.ajax({
-        //     url: url,
-        //     method: 'POST',
-        //     contentType: 'application/json', 
-        //     data: JSON.stringify(data)
-        //   }).then(function (showData) {
-          
-        //     location.reload()
-            
-        //   })
-        //   .catch(e=>{
-            
-        //   })
-        // })
+    
         const  Comment = $('<button>')
         .text('Write Comment')
         .attr('id','myBtn')
@@ -218,18 +219,26 @@ script.onload = function() {
           .addClass('textField')
           .attr('id','addText')
           $('#comment').append(text).show()
-       
+   
 
           const btn = $('<button>').text('Continue')
           .addClass('btn btnCss')
           .click(function(event){
             event.preventDefault();
             const url = `http://localhost:3000/comment`;
-            const text = document.getElementById('addText').value;
-            
+          
+            const text = $('#addText').val().trim();
+            if(text ==''){
+              $('#error').empty();
+              const error = $('<br><span>').text('Please enter text')
+             .addClass('error')
+             $('#comment').append(error).show()
+          return;
+            }
+            const userinfo = JSON.parse(localStorage.getItem('userInfo'))
             let data ={
-              userId:showData.userId,
-              userName:showData.userName,
+              userId:userinfo.userid,
+              userName:userinfo.username,
               postId:showData._id,
               text:text,
             
@@ -455,21 +464,22 @@ script.onload = function() {
       }
       });
 
-      $('#searchFriends').submit(function (event) {
+
+      $('#searchFriend').submit(function (event) {
         event.preventDefault();
         const userName = $('#search_term').val().trim();
     
-        if (userName === '') {
-          $('#error-message').text('Please enter a search term').show();
+        if (userName === '' || !/^[A-Za-z0-9]+$/.test(userName)) {
+          $('#error').text('Please enter valid username').show();
           return; 
         } else {
-          $('#error-message').hide();
+          $('#error').empty();
         }
     
         const searchUrl = `http://localhost:3000/addfriends`;
         const userInfo = JSON.parse(localStorage.getItem('userInfo'))
         let body ={
-          userName:userInfo.username,
+          userName:userName,
           userId:userInfo.userid
         }
         $('#loading').show() 
@@ -480,29 +490,33 @@ script.onload = function() {
           data: JSON.stringify(body)
         }).then(function (data) {
           $('#loading').hide() 
-          const friendList = $('#friendList');
-          friendList.empty();
-    
-          data.forEach(function (result) {
-            const show = result;
-            const listItem = createTemplate(show);
-            friendList.append(listItem);
-          });
-    
-          friendList.show();
-         
+          loadFriend();
         })
         .catch(e=>{
           $('#loading').hide() 
+          $('#error').text(e.responseJSON.error).show();
         })
       });
-      function createTemplate(data){
-        const list = $('friends')
-        const user_name = $('<h1>').text(data.userName)
-        .addClass('')
+      
 
-        list.append(user_name)
+      function nameValidate(input){
+        const result = /^[A-Za-z]+$/.test(input)
+        return result;
       }
+      function numberValidate(input){
+        const result = /^[0-9]+$/.test(input)
+        return result;
+      }
+      function userNameValidate(input){
+        const result = /^[A-Za-z0-9]+$/.test(input)
+        return result;
+      }
+      
+      function emailValidate(input){
+        const result = input.match(/^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/);
+        return result;
+      }
+  
 
       $('#registration').submit(function (event) {
         event.preventDefault();
@@ -512,13 +526,51 @@ script.onload = function() {
         const phoneNumber = $('#phoneNumber').val().trim();
         const username = $('#username').val().trim();
         const password = $('#password').val().trim();
-        if (username === '') {
-          $('#username-error').text('Please enter username').show();
+        $('#firstname-error').empty();
+        $('#lastname-error').empty();
+        $('#email-error').empty();
+        $('#phoneNumber-error').empty();
+        $('#username-error').empty();
+        $('#password-error').empty();
+        $('#error').empty();
+        if (firstname === '' || !nameValidate(firstname)) {
+          $('#firstname-error')
+          .addClass('error')
+          .text('Firstname must be letters').show();
           return; 
-        } else if (password === '') {
-          $('#password-error').text('Please enter password').show();
+        }else if (lastname === '' || !nameValidate(lastname)) {
+          $('#lastname-error')
+          .addClass('error')
+          .text('Lastname must be letters').show();
           return; 
-        } else {
+        }else if(!emailValidate(email)){
+          $('#email-error')
+          .addClass('error')
+          .text('Invalid email address').show();
+          return; 
+        }else if(!numberValidate(phoneNumber) || phoneNumber.length !=10){
+          $('#phoneNumber-error')
+          .addClass('error')
+          .text('Phone number must be 10 digit').show();
+          return; 
+        }else if(!userNameValidate(username)){
+          $('#username-error')
+          .addClass('error')
+          .text('Please enter aplhanumeric only').show();
+          return; 
+        }
+         else if (password === '') {
+          $('#password-error')
+          .addClass('error')
+          .text('Please enter password').show();
+          return; 
+        }else if (password.length < 8 || !/^(?:[0-9]+[a-z]|[a-z]+[0-9])[a-z0-9]*$/i.test(password)) {
+          $('#password-error')
+          .addClass('error')
+          .text('Password must be 8 characters long and have one letter and one number').show();
+          return; 
+        }
+         else {
           $('#password-error').hide();
           $('#username-error').hide();
         }
@@ -554,6 +606,8 @@ script.onload = function() {
           $('#error').text(e.responseJSON.error).show();
         })
       })
+
+     
       
   });
 
@@ -565,11 +619,15 @@ document.head.appendChild(script);
 const login = ()=>{
   const username = $('#username').val().trim();
   const password = $('#password').val().trim();
-  if (username === '') {
-    $('#username-error').text('Please enter username').show();
+  $('#password-error').empty();
+  $('#username-error').empty();
+  $('#login-error').empty();
+  
+  if (username === '' || !/^[A-Za-z0-9]+$/.test(username)) {
+    $('#username-error').text('Please enter valid username').show();
     return; 
-  } else if (password === '') {
-    $('#password-error').text('Please enter password').show();
+  }else if (password === '' || password.length <8 || !/^(?:[0-9]+[a-z]|[a-z]+[0-9])[a-z0-9]*$/i.test(password)) {
+    $('#password-error').text('Please enter valid password').show();
     return; 
   } else {
     $('#password-error').hide();

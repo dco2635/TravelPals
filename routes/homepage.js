@@ -61,9 +61,7 @@ router.route('/addNewPost').post(async (req, res) => {
    }
 });
 
-// router.route('/addpost/id').get(async (req, res) => {
-//   res.json("Succesful");
-// });
+
 
 router.route('/edit').put(async (req, res) => {
   let userData= req.body;
@@ -122,6 +120,9 @@ router.route('/comment').post(async (req, res) => {
 router.route('/profile').get(async (req, res) => {
    res.render('profile',{pageTitle:'Profile'});
  });
+ router.route('/addfriend').get(async (req, res) => {
+  res.render('friend',{pageTitle:'Add friends'});
+});
 
  router.route('/userInfo').post(async (req, res) => {
   let userid = req.body.userId;

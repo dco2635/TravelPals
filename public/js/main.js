@@ -468,8 +468,10 @@ script.onload = function() {
       $('#searchFriend').submit(function (event) {
         event.preventDefault();
         const userName = $('#search_term').val().trim();
+
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'))
     
-        if (userName === '' || !/^[A-Za-z0-9]+$/.test(userName)) {
+        if (userName === '' || !/^[A-Za-z0-9]+$/.test(userName) || userName === userInfo.username) {
           $('#error').text('Please enter valid username').show();
           return; 
         } else {
@@ -477,7 +479,7 @@ script.onload = function() {
         }
     
         const searchUrl = `http://localhost:3000/addfriends`;
-        const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+      
         let body ={
           userName:userName,
           userId:userInfo.userid
@@ -536,12 +538,12 @@ script.onload = function() {
         if (firstname === '' || !nameValidate(firstname)) {
           $('#firstname-error')
           .addClass('error')
-          .text('Firstname must be letters').show();
+          .text('First name must be letters').show();
           return; 
         }else if (lastname === '' || !nameValidate(lastname)) {
           $('#lastname-error')
           .addClass('error')
-          .text('Lastname must be letters').show();
+          .text('Last name must be letters').show();
           return; 
         }else if(!emailValidate(email)){
           $('#email-error')
@@ -551,12 +553,12 @@ script.onload = function() {
         }else if(!numberValidate(phoneNumber) || phoneNumber.length !=10){
           $('#phoneNumber-error')
           .addClass('error')
-          .text('Phone number must be 10 digit').show();
+          .text('Phone number must be 10 digits').show();
           return; 
         }else if(!userNameValidate(username)){
           $('#username-error')
           .addClass('error')
-          .text('Please enter aplhanumeric only').show();
+          .text('Please enter alphanumeric characte only').show();
           return; 
         }
          else if (password === '') {
@@ -564,10 +566,10 @@ script.onload = function() {
           .addClass('error')
           .text('Please enter password').show();
           return; 
-        }else if (password.length < 8 || !/^(?:[0-9]+[a-z]|[a-z]+[0-9])[a-z0-9]*$/i.test(password)) {
+        }else if ( !/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/i.test(password)) {
           $('#password-error')
           .addClass('error')
-          .text('Password must be 8 characters long and have one letter and one number').show();
+          .text('Password must be between 6-18 characters long and have one letter, one special character, and one number. Special characters allowed: !@#$%^&* ').show();
           return; 
         }
          else {
@@ -626,7 +628,7 @@ const login = ()=>{
   if (username === '' || !/^[A-Za-z0-9]+$/.test(username)) {
     $('#username-error').text('Please enter valid username').show();
     return; 
-  }else if (password === '' || password.length <8 || !/^(?:[0-9]+[a-z]|[a-z]+[0-9])[a-z0-9]*$/i.test(password)) {
+  }else if (password === '' || !/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/i.test(password)) {
     $('#password-error').text('Please enter valid password').show();
     return; 
   } else {

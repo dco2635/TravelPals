@@ -12,6 +12,9 @@ let exportedMethods = {
 
     const yourFriend = await userData.getUserByPhoneNumber(phoneNumber);
     const userCollection = await users();
+    
+    
+   
 
     const friendsCollection = await friends();
 
@@ -38,11 +41,17 @@ let exportedMethods = {
     userName = validate.checkString(userName);
     userId = validate.checkId(userId);
 
+ 
     const yourFriend = await userData.getUserByUserName(userName);
     const person = await userData.getUserById(userId);
     const userCollection = await users();
 
-    console.log(yourFriend);
+    let friendName= yourFriend.firstName + " " + yourFriend.lastName; 
+    let result = person.friends.filter(p=>p===friendName).length
+
+    console.log(result);
+
+    if(result > 0) throw "Friendship already exists";
 
     const friendsCollection = await friends();
 
@@ -75,6 +84,8 @@ let exportedMethods = {
 
     return storedFriend;
   },
+
+  
 
   // we need _id that represents the relationship | friend _id | user_id
   // think about how the phone number would be used to search and then once it is found the id attached to the phone number will be placed into the array!

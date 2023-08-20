@@ -5,7 +5,7 @@ This website serves as a social media application in which individuals can find 
 https://github.com/dco2635/TravelPals 
 
 ## Quick Start
-1. You will need to get connect to the team's MongoDB database to review the data. Connect to the following server uri on Compass: mongodb+srv://CS546:cs546@cluster0.tk4aldg.mongodb.net/. The database is already populated with data. If you wish to add more data, you may run node seed.js.
+1. You will need to get connect to the team's MongoDB database to review the data. Connect to the following server uri on Compass: mongodb+srv://CS546:cs546@cluster0.tk4aldg.mongodb.net/. The database is already populated with data. If you wish to add more data, you may run npm run seed.
 
 2. Install all packages using npm install. 
 
